@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================================
+   Дизайн-токены
+   Тёмная тема — значения сняты пиксельно с эталонного
+   скриншота (fon #0F172A, карточки #1E293B, золото ~#C89632,
+   зелёный статус "открыто" #4ADE80).
+   Светлая тема — не было в референсе, подобрана в той же
+   стилистике (тёплый кремовый фон, тот же золотой акцент,
+   затемнённые версии акцентов для контраста на белом).
+   ========================================================= */
+
+:root,
+.theme-dark {
+  --color-bg: 15 23 42;
+  --color-surface: 30 41 59;
+  --color-surface-raised: 41 54 76;
+  --color-border: 51 65 85;
+
+  --color-ink: 248 250 252;
+  --color-ink-muted: 148 163 184;
+
+  --color-gold: 200 150 50;
+  --color-gold-muted: 176 148 108;
+  --color-gold-bg: 42 36 21;
+
+  --color-open: 74 222 128;
+  --color-open-bg: 27 52 55;
+
+  --color-warn: 210 165 90;
+  --color-warn-bg: 42 36 21;
+  --color-warn-border: 92 77 40;
+}
+
+.theme-light {
+  --color-bg: 250 248 244;
+  --color-surface: 255 255 255;
+  --color-surface-raised: 244 241 234;
+  --color-border: 224 218 205;
+
+  --color-ink: 20 32 51;
+  --color-ink-muted: 100 112 138;
+
+  --color-gold: 168 122 40;
+  --color-gold-muted: 140 108 60;
+  --color-gold-bg: 250 240 220;
+
+  --color-open: 22 130 80;
+  --color-open-bg: 224 244 232;
+
+  --color-warn: 150 100 20;
+  --color-warn-bg: 253 243 224;
+  --color-warn-border: 232 210 160;
+}
+
+html {
+  color-scheme: dark;
+}
+.theme-light {
+  color-scheme: light;
+}
+
+body {
+  background-color: rgb(var(--color-bg));
+  color: rgb(var(--color-ink));
+}
+
+/* Уважаем reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Видимый фокус для клавиатуры */
+:focus-visible {
+  outline: 2px solid rgb(var(--color-gold));
+  outline-offset: 2px;
+  border-radius: 4px;
+}

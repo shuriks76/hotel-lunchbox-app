@@ -1,0 +1,20 @@
+{
+  "app": {
+    "name": "Profil Hotels",
+    "tagline": "Lunchbox ordering"
+  },
+  "login": {
+    "title": "Welcome",
+    "subtitle": "Sign in to order your lunchboxes",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "signInButton": "Sign in",
+    "signUpButton": "Create account",
+    "toggleToSignUp": "No account yet? Create one",
+    "toggleToSignIn": "Already have an account? Sign in",
+    "googleButton": "Continue with Google",
+    "orDivider": "or",
+    "errorGeneric": "Something went wrong. Please try again.",
+    "checkEmail": "Check your email to confirm your account."
+  }
+}

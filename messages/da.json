@@ -1,0 +1,20 @@
+{
+  "app": {
+    "name": "Profil Hotels",
+    "tagline": "Bestilling af madpakker"
+  },
+  "login": {
+    "title": "Velkommen",
+    "subtitle": "Log ind for at bestille dine madpakker",
+    "emailLabel": "Email",
+    "passwordLabel": "Adgangskode",
+    "signInButton": "Log ind",
+    "signUpButton": "Opret konto",
+    "toggleToSignUp": "Ingen konto endnu? Opret en",
+    "toggleToSignIn": "Har du allerede en konto? Log ind",
+    "googleButton": "Fortsæt med Google",
+    "orDivider": "eller",
+    "errorGeneric": "Noget gik galt. Prøv igen.",
+    "checkEmail": "Tjek din email for at bekræfte din konto."
+  }
+}

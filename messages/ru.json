@@ -1,0 +1,20 @@
+{
+  "app": {
+    "name": "Profil Hotels",
+    "tagline": "Заказ ланчбоксов"
+  },
+  "login": {
+    "title": "Добро пожаловать",
+    "subtitle": "Войдите, чтобы заказывать ланчбоксы",
+    "emailLabel": "Email",
+    "passwordLabel": "Пароль",
+    "signInButton": "Войти",
+    "signUpButton": "Создать аккаунт",
+    "toggleToSignUp": "Нет аккаунта? Зарегистрироваться",
+    "toggleToSignIn": "Уже есть аккаунт? Войти",
+    "googleButton": "Продолжить с Google",
+    "orDivider": "или",
+    "errorGeneric": "Что-то пошло не так. Попробуйте ещё раз.",
+    "checkEmail": "Проверьте почту, чтобы подтвердить аккаунт."
+  }
+}
