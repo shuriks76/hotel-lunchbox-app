@@ -64,3 +64,12 @@ export default async function LocaleLayout({
             `,
           }}
         />
+      </head>
+      <body className="font-sans antialiased min-h-screen">
+        <NextIntlClientProvider messages={messages}>
+          {children}
+        </NextIntlClientProvider>
+      </body>
+    </html>
+  );
+}
