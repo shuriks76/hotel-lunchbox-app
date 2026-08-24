@@ -16,5 +16,20 @@
     "orDivider": "eller",
     "errorGeneric": "Noget gik galt. Prøv igen.",
     "checkEmail": "Tjek din email for at bekræfte din konto."
+  },
+  "waiting": {
+    "title": "Næsten der",
+    "body": "Kom forbi receptionen, så vi kan tildele dit værelse.",
+    "checking": "Så snart værelset er tildelt, sender vi dig automatisk videre til hovedskærmen.",
+    "signOut": "Log ud"
+  },
+  "root": {
+    "stepDone": "Trin 2 klar",
+    "roomAssigned": "Værelse nr. {room}",
+    "roomAssignedUnknown": "Værelse tildelt",
+    "calendarComingSoon": "Næste skridt er hovedskærmen med bestillingskalenderen.",
+    "adminTitle": "Administratorpanel",
+    "adminComingSoon": "Adminpanelet bygger vi efter gæsteskærmene, som planlagt.",
+    "signOut": "Log ud"
   }
 }
