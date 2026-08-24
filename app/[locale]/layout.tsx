@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Cormorant_Garamond, Inter } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
-import { setRequestLocale } from 'next-intl/server';
+import { setRequestLocale, getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import '../globals.css';
@@ -44,6 +44,8 @@ export default async function LocaleLayout({
   // Включаем статический рендер этого сегмента для данной локали.
   setRequestLocale(locale);
 
+  const messages = await getMessages();
+
   return (
     <html lang={locale} className={`${displayFont.variable} ${sansFont.variable}`}>
       <head>
@@ -62,10 +64,3 @@ export default async function LocaleLayout({
             `,
           }}
         />
-      </head>
-      <body className="font-sans antialiased min-h-screen">
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
-      </body>
-    </html>
-  );
-}
