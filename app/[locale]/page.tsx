@@ -29,7 +29,7 @@ export default async function RootPage({
           Шаг 1 готов
         </p>
         <h1 className="font-display text-2xl text-ink">
-          Вход работает, {user.email}
+          Вход работает, {user!.email}
         </h1>
         <p className="text-ink-muted text-sm">
           Дальше соберём экран ожидания заселения и главный экран с
