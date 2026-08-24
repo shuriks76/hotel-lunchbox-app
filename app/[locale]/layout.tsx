@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, Inter } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale, getMessages } from 'next-intl/server';
@@ -22,6 +22,16 @@ const sansFont = Inter({
 export const metadata: Metadata = {
   title: 'Profil Hotels — Lunchbox',
   description: 'Заказ ланчбоксов для гостей отеля',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'Lunchbox',
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#0F172A',
 };
 
 export function generateStaticParams() {

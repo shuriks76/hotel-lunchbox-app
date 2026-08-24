@@ -20,8 +20,9 @@
   "waiting": {
     "title": "Almost there",
     "body": "Please stop by the reception desk so we can assign your room.",
-    "checking": "We'll take you to the main screen automatically once your room is assigned.",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "refreshButton": "I've checked in — refresh",
+    "refreshing": "Checking…"
   },
   "root": {
     "stepDone": "Step 2 done",

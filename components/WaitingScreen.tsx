@@ -1,26 +1,23 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useRouter } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/client';
 
-// Насколько часто перепроверяем, не назначили ли уже комнату.
-// Без Supabase Realtime, просто мягкий поллинг через router.refresh() —
-// это дешево и для экрана ожидания более чем достаточно.
-const POLL_INTERVAL_MS = 30_000;
-
 export default function WaitingScreen() {
   const t = useTranslations('waiting');
   const router = useRouter();
+  const [refreshing, setRefreshing] = useState(false);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      router.refresh();
-    }, POLL_INTERVAL_MS);
-    return () => clearInterval(interval);
-  }, [router]);
+  function handleRefresh() {
+    setRefreshing(true);
+    router.refresh();
+    // Сбрасываем индикатор через секунду — router.refresh() не даёт
+    // явного колбэка о завершении, а сама навигация обычно быстрая.
+    setTimeout(() => setRefreshing(false), 1000);
+  }
 
   async function handleSignOut() {
     const supabase = createClient();
@@ -46,7 +43,15 @@ export default function WaitingScreen() {
           </span>
           <h1 className="font-display text-2xl text-ink">{t('title')}</h1>
           <p className="text-ink text-sm">{t('body')}</p>
-          <p className="text-ink-muted text-xs">{t('checking')}</p>
+
+          <button
+            type="button"
+            onClick={handleRefresh}
+            disabled={refreshing}
+            className="w-full rounded-pill bg-gold text-surface font-medium px-4 py-2.5 hover:opacity-90 transition-opacity disabled:opacity-50"
+          >
+            {refreshing ? t('refreshing') : t('refreshButton')}
+          </button>
         </div>
 
         <button

@@ -20,8 +20,9 @@
   "waiting": {
     "title": "Næsten der",
     "body": "Kom forbi receptionen, så vi kan tildele dit værelse.",
-    "checking": "Så snart værelset er tildelt, sender vi dig automatisk videre til hovedskærmen.",
-    "signOut": "Log ud"
+    "signOut": "Log ud",
+    "refreshButton": "Jeg er tjekket ind — opdater",
+    "refreshing": "Tjekker…"
   },
   "root": {
     "stepDone": "Trin 2 klar",
