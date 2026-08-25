@@ -13,7 +13,7 @@ type ActiveStayRow = {
   room_id: string;
   user_id: string;
   checked_in_at: string;
-  profiles: { full_name: string } | null;
+  profiles: { full_name: string }[] | null;
 };
 
 type ProfileRow = {
@@ -25,8 +25,8 @@ type ArchivedStayRow = {
   id: string;
   user_id: string;
   checked_out_at: string | null;
-  profiles: { full_name: string } | null;
-  rooms: { room_number: string } | null;
+  profiles: { full_name: string }[] | null;
+  rooms: { room_number: string }[] | null;
 };
 
 export default async function AdminRoomsPage() {
@@ -63,13 +63,13 @@ export default async function AdminRoomsPage() {
         stayId: s.id,
         roomId: s.room_id,
         userId: s.user_id,
-        fullName: s.profiles?.full_name ?? null,
+        fullName: s.profiles?.[0]?.full_name ?? null,
       }))}
       unassigned={unassigned.map((p) => ({ id: p.id, fullName: p.full_name }))}
       archived={typedArchived.map((s) => ({
         stayId: s.id,
-        fullName: s.profiles?.full_name ?? null,
-        roomNumber: s.rooms?.room_number ?? null,
+        fullName: s.profiles?.[0]?.full_name ?? null,
+        roomNumber: s.rooms?.[0]?.room_number ?? null,
         checkedOutAt: s.checked_out_at,
       }))}
     />
