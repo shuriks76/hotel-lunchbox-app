@@ -32,5 +32,31 @@
     "adminTitle": "Administratorpanel",
     "adminComingSoon": "Adminpanelet bygger vi efter gæsteskærmene, som planlagt.",
     "signOut": "Log ud"
+  },
+  "main": {
+    "guestLabel": "Gæst",
+    "signOut": "Log ud",
+    "roomLabel": "Dit værelse",
+    "roomNumber": "Værelse nr. {room}",
+    "familyBadge": "Familie",
+    "chooseDate": "Vælg en dato:",
+    "daysCount": "{count} dage",
+    "addOrderLabel": "Tilføj bestilling",
+    "deadlinePassed": "Bestilling er lukket for denne dato",
+    "deadlinePassedSub": "Denne bestilling kan ikke længere ændres.",
+    "deadlineOpenUntil": "Åben indtil {time} (dagen før)",
+    "mealBreakfast": "Morgenmad",
+    "mealLunch": "Frokost",
+    "mealDinner": "Aftensmad",
+    "familyCounterHint": "Fælles tæller for værelset",
+    "ownCounterHint": "Din personlige bestilling",
+    "errorGeneric": "Noget gik galt, prøv igen.",
+    "weekdayMon": "Man",
+    "weekdayTue": "Tir",
+    "weekdayWed": "Ons",
+    "weekdayThu": "Tor",
+    "weekdayFri": "Fre",
+    "weekdaySat": "Lør",
+    "weekdaySun": "Søn"
   }
 }

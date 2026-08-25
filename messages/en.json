@@ -32,5 +32,31 @@
     "adminTitle": "Admin panel",
     "adminComingSoon": "We'll build the admin panel after the guest screens, as planned.",
     "signOut": "Sign out"
+  },
+  "main": {
+    "guestLabel": "Guest",
+    "signOut": "Sign out",
+    "roomLabel": "Your room",
+    "roomNumber": "Room № {room}",
+    "familyBadge": "Family",
+    "chooseDate": "Choose a date:",
+    "daysCount": "{count} days",
+    "addOrderLabel": "Add order",
+    "deadlinePassed": "Ordering is closed for this date",
+    "deadlinePassedSub": "This order can no longer be changed.",
+    "deadlineOpenUntil": "Open until {time} (the day before)",
+    "mealBreakfast": "Breakfast",
+    "mealLunch": "Lunch",
+    "mealDinner": "Dinner",
+    "familyCounterHint": "Shared counter for the room",
+    "ownCounterHint": "Your personal order",
+    "errorGeneric": "Something went wrong, please try again.",
+    "weekdayMon": "Mon",
+    "weekdayTue": "Tue",
+    "weekdayWed": "Wed",
+    "weekdayThu": "Thu",
+    "weekdayFri": "Fri",
+    "weekdaySat": "Sat",
+    "weekdaySun": "Sun"
   }
 }

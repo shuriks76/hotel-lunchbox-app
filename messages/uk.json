@@ -32,5 +32,31 @@
     "adminTitle": "Панель адміністратора",
     "adminComingSoon": "Адмін-панель зберемо після гостьових екранів, за планом.",
     "signOut": "Вийти"
+  },
+  "main": {
+    "guestLabel": "Гість",
+    "signOut": "Вийти",
+    "roomLabel": "Ваша кімната",
+    "roomNumber": "Кімната № {room}",
+    "familyBadge": "Сімейна",
+    "chooseDate": "Оберіть дату:",
+    "daysCount": "{count} днів",
+    "addOrderLabel": "Додати замовлення",
+    "deadlinePassed": "Прийом замовлень на цю дату закрито",
+    "deadlinePassedSub": "Змінити замовлення на цю дату вже не можна.",
+    "deadlineOpenUntil": "Відкрито до {time} (за день до дати)",
+    "mealBreakfast": "Сніданок",
+    "mealLunch": "Обід",
+    "mealDinner": "Вечеря",
+    "familyCounterHint": "Спільний лічильник на кімнату",
+    "ownCounterHint": "Ваше особисте замовлення",
+    "errorGeneric": "Щось пішло не так, спробуйте ще раз.",
+    "weekdayMon": "Пн",
+    "weekdayTue": "Вт",
+    "weekdayWed": "Ср",
+    "weekdayThu": "Чт",
+    "weekdayFri": "Пт",
+    "weekdaySat": "Сб",
+    "weekdaySun": "Нд"
   }
 }

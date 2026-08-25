@@ -32,5 +32,31 @@
     "adminTitle": "Панель администратора",
     "adminComingSoon": "Админ-панель соберём после гостевых экранов, по плану.",
     "signOut": "Выйти"
+  },
+  "main": {
+    "guestLabel": "Гость",
+    "signOut": "Выйти",
+    "roomLabel": "Ваш номер",
+    "roomNumber": "Комната № {room}",
+    "familyBadge": "Семейный",
+    "chooseDate": "Выберите дату:",
+    "daysCount": "{count} дней",
+    "addOrderLabel": "Добавить заказ",
+    "deadlinePassed": "Приём заказов на эту дату закрыт",
+    "deadlinePassedSub": "Изменить заказ на эту дату уже нельзя.",
+    "deadlineOpenUntil": "Приём открыт до {time} (день перед датой)",
+    "mealBreakfast": "Завтрак",
+    "mealLunch": "Обед",
+    "mealDinner": "Ужин",
+    "familyCounterHint": "Общий счётчик на комнату",
+    "ownCounterHint": "Ваш личный заказ",
+    "errorGeneric": "Не получилось, попробуйте ещё раз.",
+    "weekdayMon": "Пн",
+    "weekdayTue": "Вт",
+    "weekdayWed": "Ср",
+    "weekdayThu": "Чт",
+    "weekdayFri": "Пт",
+    "weekdaySat": "Сб",
+    "weekdaySun": "Вс"
   }
 }

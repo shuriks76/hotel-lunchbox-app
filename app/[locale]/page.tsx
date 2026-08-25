@@ -1,21 +1,22 @@
 import { redirect } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/server';
 import WaitingScreen from '@/components/WaitingScreen';
-import RoomAssignedPlaceholder from '@/components/RoomAssignedPlaceholder';
 import AdminPlaceholder from '@/components/AdminPlaceholder';
+import MainScreen from '@/components/MainScreen';
+import { copenhagenTodayISO, getTwoWeekRange } from '@/lib/date/copenhagen';
 
 type StayWithRoom = {
+  id: string;
   room_id: string;
-  rooms: { room_number: string } | null;
+  rooms: { room_number: string; is_family: boolean; capacity: number } | null;
 };
 
 /**
  * Диспетчер главной страницы.
  * - не вошёл -> /login
  * - admin/owner -> заглушка админ-панели (соберём отдельным шагом позже)
- * - guest без активного проживания -> экран ожидания ("подойдите на ресепшен")
- * - guest с активным проживанием -> временная заглушка,
- *   реальный календарь с заказами будет в шаге 3.
+ * - guest без активного проживания -> экран ожидания
+ * - guest с активным проживанием -> главный экран с календарём
  */
 export default async function RootPage({
   params,
@@ -36,7 +37,7 @@ export default async function RootPage({
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('role')
+    .select('role, full_name')
     .eq('id', user.id)
     .single();
 
@@ -46,16 +47,35 @@ export default async function RootPage({
 
   const { data: stay } = await supabase
     .from('stays')
-    .select('room_id, rooms(room_number)')
+    .select('id, room_id, rooms(room_number, is_family, capacity)')
     .eq('user_id', user.id)
     .eq('active', true)
     .maybeSingle<StayWithRoom>();
 
-  if (!stay) {
+  if (!stay || !stay.rooms) {
     return <WaitingScreen />;
   }
 
+  const todayISO = copenhagenTodayISO();
+  const dates = getTwoWeekRange(todayISO);
+
+  const { data: orderRows } = await supabase
+    .from('orders')
+    .select('order_date, meal_type, stay_id, issued_at')
+    .gte('order_date', dates[0])
+    .lte('order_date', dates[dates.length - 1])
+    .is('cancelled_at', null);
+
   return (
-    <RoomAssignedPlaceholder roomNumber={stay.rooms?.room_number ?? null} />
+    <MainScreen
+      guestName={profile?.full_name ?? user.email ?? ''}
+      roomNumber={stay.rooms.room_number}
+      isFamily={stay.rooms.is_family}
+      capacity={stay.rooms.capacity}
+      ownStayId={stay.id}
+      dates={dates}
+      initialOrders={orderRows ?? []}
+      todayISO={todayISO}
+    />
   );
 }
