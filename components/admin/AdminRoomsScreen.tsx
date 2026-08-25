@@ -329,7 +329,7 @@ export default function AdminRoomsScreen({
                                 type="button"
                                 onClick={() => {
                                   setChangeRoomFor(res);
-                                  setNewRoomId('');
+                                  setNewRoomInput('');
                                   setChangeRoomError(null);
                                 }}
                                 className="text-xs px-2.5 py-1 rounded-full border border-border text-ink-muted hover:border-gold hover:text-gold transition-colors"
