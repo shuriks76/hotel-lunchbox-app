@@ -50,12 +50,12 @@ export default function AdminRoomsScreen({
   const [error, setError] = useState<string | null>(null);
 
   // Заселение незаселённых гостей
-  const [assignSelection, setAssignSelection] = useState<Record<string, string>>({});
+  const [assignInput, setAssignInput] = useState<Record<string, string>>({});
   const [assigningGuestId, setAssigningGuestId] = useState<string | null>(null);
 
   // Модалка "сменить комнату"
   const [changeRoomFor, setChangeRoomFor] = useState<Resident | null>(null);
-  const [newRoomId, setNewRoomId] = useState<string>('');
+  const [newRoomInput, setNewRoomInput] = useState<string>('');
   const [changingRoom, setChangingRoom] = useState(false);
   const [changeRoomError, setChangeRoomError] = useState<string | null>(null);
 
@@ -86,18 +86,35 @@ export default function AdminRoomsScreen({
     return (residentsByRoom.get(room.id)?.length ?? 0) < room.capacity;
   }
 
+  function findRoomByNumber(input: string, excludeRoomId?: string) {
+    const needle = input.trim().toLowerCase();
+    if (!needle) return null;
+    return (
+      rooms.find(
+        (room) =>
+          room.room_number.trim().toLowerCase() === needle &&
+          room.id !== excludeRoomId &&
+          roomHasFreeSlot(room)
+      ) ?? null
+    );
+  }
+
   async function handleAssign(guestId: string) {
-    const roomId = assignSelection[guestId];
-    if (!roomId) return;
+    const room = findRoomByNumber(assignInput[guestId] ?? '');
+    if (!room) {
+      setError(t('roomNotFound'));
+      return;
+    }
     setAssigningGuestId(guestId);
     setError(null);
     const { error } = await supabase.rpc('admin_assign_room', {
       p_user_id: guestId,
-      p_room_id: roomId,
+      p_room_id: room.id,
     });
     if (error) {
       setError(error.message || t('errorGeneric'));
     } else {
+      setAssignInput((prev) => ({ ...prev, [guestId]: '' }));
       router.refresh();
     }
     setAssigningGuestId(null);
@@ -115,12 +132,17 @@ export default function AdminRoomsScreen({
   }
 
   async function confirmChangeRoom() {
-    if (!changeRoomFor || !newRoomId) return;
+    if (!changeRoomFor) return;
+    const room = findRoomByNumber(newRoomInput, changeRoomFor.roomId);
+    if (!room) {
+      setChangeRoomError(t('roomNotFound'));
+      return;
+    }
     setChangingRoom(true);
     setChangeRoomError(null);
     const { error } = await supabase.rpc('admin_change_room', {
       p_stay_id: changeRoomFor.stayId,
-      p_new_room_id: newRoomId,
+      p_new_room_id: room.id,
     });
     if (error) {
       setChangeRoomError(error.message || t('errorGeneric'));
@@ -129,7 +151,7 @@ export default function AdminRoomsScreen({
     }
     setChangingRoom(false);
     setChangeRoomFor(null);
-    setNewRoomId('');
+    setNewRoomInput('');
     router.refresh();
   }
 
@@ -221,27 +243,23 @@ export default function AdminRoomsScreen({
                       {guest.fullName || t('guestNoName')}
                     </span>
                     <div className="flex items-center gap-2">
-                      <select
-                        value={assignSelection[guest.id] ?? ''}
+                      <input
+                        type="text"
+                        list="free-rooms-list"
+                        value={assignInput[guest.id] ?? ''}
                         onChange={(e) =>
-                          setAssignSelection((prev) => ({
+                          setAssignInput((prev) => ({
                             ...prev,
                             [guest.id]: e.target.value,
                           }))
                         }
-                        className="rounded-lg border border-border bg-surface px-2 py-1.5 text-sm text-ink"
-                      >
-                        <option value="">{t('assignRoomPlaceholder')}</option>
-                        {rooms.filter(roomHasFreeSlot).map((room) => (
-                          <option key={room.id} value={room.id}>
-                            {room.room_number}
-                          </option>
-                        ))}
-                      </select>
+                        placeholder={t('assignRoomPlaceholder')}
+                        className="w-28 rounded-lg border border-border bg-surface px-2 py-1.5 text-sm text-ink"
+                      />
                       <button
                         type="button"
                         disabled={
-                          !assignSelection[guest.id] ||
+                          !assignInput[guest.id] ||
                           assigningGuestId === guest.id
                         }
                         onClick={() => handleAssign(guest.id)}
@@ -393,24 +411,29 @@ export default function AdminRoomsScreen({
         onConfirm={confirmChangeRoom}
         onCancel={() => setChangeRoomFor(null)}
       >
-        <select
-          value={newRoomId}
-          onChange={(e) => setNewRoomId(e.target.value)}
+        <input
+          type="text"
+          list="free-rooms-list"
+          value={newRoomInput}
+          onChange={(e) => setNewRoomInput(e.target.value)}
+          placeholder={t('changeRoomModalSelectLabel')}
           className="w-full rounded-lg border border-border bg-surface-raised px-3 py-2 text-sm text-ink"
-        >
-          <option value="">{t('changeRoomModalSelectLabel')}</option>
-          {rooms
-            .filter(
-              (room) =>
-                room.id !== changeRoomFor?.roomId && roomHasFreeSlot(room)
-            )
-            .map((room) => (
-              <option key={room.id} value={room.id}>
-                {room.room_number}
-              </option>
-            ))}
-        </select>
+        />
       </ConfirmModal>
+
+      {/* Общий список подсказок для полей ввода номера комнаты — переиспользуется
+          и при заселении, и при смене комнаты (текущая комната жильца туда не
+          попадает, т.к. фильтруем по roomHasFreeSlot вместе с исключением ниже). */}
+      <datalist id="free-rooms-list">
+        {rooms
+          .filter(
+            (room) =>
+              room.id !== changeRoomFor?.roomId && roomHasFreeSlot(room)
+          )
+          .map((room) => (
+            <option key={room.id} value={room.room_number} />
+          ))}
+      </datalist>
 
       {/* Модалка: выселить */}
       <ConfirmModal

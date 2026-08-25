@@ -68,7 +68,7 @@
     "unassignedTitle": "Ikke-tildelte gæster",
     "unassignedEmpty": "Alle registrerede gæster har i øjeblikket et værelse.",
     "assignButton": "Tildel",
-    "assignRoomPlaceholder": "Vælg værelse",
+    "assignRoomPlaceholder": "Værelsesnummer",
     "roomsTitle": "Værelser",
     "roomCapacity": "{count} senge",
     "familyToggleLabel": "Familie",
@@ -82,7 +82,7 @@
     "checkedOutOn": "Tjekket ud: {date}",
     "changeRoomModalTitle": "Skift værelse",
     "changeRoomModalWarning": "Hvis gæsten har bestillinger for fremtidige datoer, arkiveres de automatisk (slettes ikke).",
-    "changeRoomModalSelectLabel": "Nyt værelse",
+    "changeRoomModalSelectLabel": "Nyt værelsesnummer",
     "checkoutModalTitle": "Tjek denne gæst ud?",
     "checkoutModalWarning": "Gæstens fremtidige bestillinger arkiveres automatisk (slettes ikke). De kan gendannes fra arkivet senere.",
     "restoreModalTitle": "Gendan denne gæst?",
@@ -90,6 +90,7 @@
     "confirm": "Bekræft",
     "cancel": "Annuller",
     "errorGeneric": "Noget gik galt, prøv igen.",
-    "guestNoName": "Intet navn"
+    "guestNoName": "Intet navn",
+    "roomNotFound": "Intet ledigt værelse med det nummer — tjek og prøv igen."
   }
 }

@@ -68,7 +68,7 @@
     "unassignedTitle": "Unassigned guests",
     "unassignedEmpty": "All registered guests currently have a room.",
     "assignButton": "Assign",
-    "assignRoomPlaceholder": "Choose a room",
+    "assignRoomPlaceholder": "Room number",
     "roomsTitle": "Rooms",
     "roomCapacity": "{count} beds",
     "familyToggleLabel": "Family",
@@ -82,7 +82,7 @@
     "checkedOutOn": "Checked out: {date}",
     "changeRoomModalTitle": "Change room",
     "changeRoomModalWarning": "If this guest has orders placed for future dates, they will be automatically archived (not deleted).",
-    "changeRoomModalSelectLabel": "New room",
+    "changeRoomModalSelectLabel": "New room number",
     "checkoutModalTitle": "Check out this guest?",
     "checkoutModalWarning": "This guest's future orders will be automatically archived (not deleted). They can be restored from the archive later.",
     "restoreModalTitle": "Restore this guest?",
@@ -90,6 +90,7 @@
     "confirm": "Confirm",
     "cancel": "Cancel",
     "errorGeneric": "Something went wrong, please try again.",
-    "guestNoName": "No name"
+    "guestNoName": "No name",
+    "roomNotFound": "No free room with that number — check and try again."
   }
 }

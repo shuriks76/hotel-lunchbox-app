@@ -68,7 +68,7 @@
     "unassignedTitle": "Незаселені гості",
     "unassignedEmpty": "Наразі всі зареєстровані гості заселені.",
     "assignButton": "Заселити",
-    "assignRoomPlaceholder": "Оберіть кімнату",
+    "assignRoomPlaceholder": "Номер кімнати",
     "roomsTitle": "Кімнати",
     "roomCapacity": "{count} місця",
     "familyToggleLabel": "Сімейна",
@@ -82,7 +82,7 @@
     "checkedOutOn": "Виселено: {date}",
     "changeRoomModalTitle": "Змінити кімнату",
     "changeRoomModalWarning": "Якщо у жильця є замовлення на майбутні дати, вони автоматично підуть в архів (не видаляться).",
-    "changeRoomModalSelectLabel": "Нова кімната",
+    "changeRoomModalSelectLabel": "Номер нової кімнати",
     "checkoutModalTitle": "Виселити жильця?",
     "checkoutModalWarning": "Майбутні замовлення цього жильця автоматично підуть в архів (не видаляться). Його можна буде відновити з архіву.",
     "restoreModalTitle": "Відновити жильця?",
@@ -90,6 +90,7 @@
     "confirm": "Підтвердити",
     "cancel": "Скасувати",
     "errorGeneric": "Щось пішло не так, спробуйте ще раз.",
-    "guestNoName": "Без імені"
+    "guestNoName": "Без імені",
+    "roomNotFound": "Такої вільної кімнати немає — перевірте номер."
   }
 }

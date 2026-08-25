@@ -68,7 +68,7 @@
     "unassignedTitle": "Незаселённые гости",
     "unassignedEmpty": "Сейчас все зарегистрированные гости заселены.",
     "assignButton": "Заселить",
-    "assignRoomPlaceholder": "Выберите комнату",
+    "assignRoomPlaceholder": "Номер комнаты",
     "roomsTitle": "Комнаты",
     "roomCapacity": "{count} мест",
     "familyToggleLabel": "Семейная",
@@ -82,7 +82,7 @@
     "checkedOutOn": "Выселен(а): {date}",
     "changeRoomModalTitle": "Сменить комнату",
     "changeRoomModalWarning": "Если у жильца есть оформленные заказы на будущие даты, они автоматически уйдут в архив (не удалятся).",
-    "changeRoomModalSelectLabel": "Новая комната",
+    "changeRoomModalSelectLabel": "Номер новой комнаты",
     "checkoutModalTitle": "Выселить жильца?",
     "checkoutModalWarning": "Будущие заказы этого жильца автоматически уйдут в архив (не удалятся). Жильца можно будет восстановить из архива.",
     "restoreModalTitle": "Восстановить жильца?",
@@ -90,6 +90,7 @@
     "confirm": "Подтвердить",
     "cancel": "Отмена",
     "errorGeneric": "Не получилось, попробуйте ещё раз.",
-    "guestNoName": "Без имени"
+    "guestNoName": "Без имени",
+    "roomNotFound": "Такой свободной комнаты нет — проверьте номер."
   }
 }
