@@ -1,7 +1,6 @@
 import { redirect } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/server';
 import WaitingScreen from '@/components/WaitingScreen';
-import AdminPlaceholder from '@/components/AdminPlaceholder';
 import MainScreen from '@/components/MainScreen';
 import { copenhagenTodayISO, getTwoWeekRange } from '@/lib/date/copenhagen';
 
@@ -42,7 +41,8 @@ export default async function RootPage({
     .single();
 
   if (profile && (profile.role === 'admin' || profile.role === 'owner')) {
-    return <AdminPlaceholder />;
+    redirect({ href: '/admin', locale });
+    return;
   }
 
   const { data: stay } = await supabase
