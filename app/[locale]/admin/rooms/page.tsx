@@ -36,21 +36,40 @@ type ArchivedStayRow = {
 export default async function AdminRoomsPage() {
   const supabase = createClient();
 
-  const [{ data: rooms }, { data: activeStays }, { data: guestProfiles }, { data: archived }] =
-    await Promise.all([
-      supabase.from('rooms').select('id, room_number, capacity, is_family').order('room_number'),
-      supabase
-        .from('stays')
-        .select('id, room_id, user_id, checked_in_at, profiles(full_name)')
-        .eq('active', true),
-      supabase.from('profiles').select('id, full_name').eq('role', 'guest'),
-      supabase
-        .from('stays')
-        .select('id, user_id, checked_out_at, profiles(full_name), rooms(room_number)')
-        .eq('active', false)
-        .order('checked_out_at', { ascending: false })
-        .limit(50),
-    ]);
+  const [
+    { data: rooms, error: roomsError },
+    { data: activeStays, error: activeStaysError },
+    { data: guestProfiles, error: guestProfilesError },
+    { data: archived, error: archivedError },
+  ] = await Promise.all([
+    supabase.from('rooms').select('id, room_number, capacity, is_family').order('room_number'),
+    supabase
+      .from('stays')
+      .select('id, room_id, user_id, checked_in_at, profiles(full_name)')
+      .eq('active', true),
+    supabase.from('profiles').select('id, full_name').eq('role', 'guest'),
+    supabase
+      .from('stays')
+      .select('id, user_id, checked_out_at, profiles(full_name), rooms(room_number)')
+      .eq('active', false)
+      .order('checked_out_at', { ascending: false })
+      .limit(50),
+  ]);
+
+  const queryErrors = [
+    roomsError && `rooms: ${roomsError.message}`,
+    activeStaysError && `stays (active): ${activeStaysError.message}`,
+    guestProfilesError && `profiles: ${guestProfilesError.message}`,
+    archivedError && `stays (archive): ${archivedError.message}`,
+  ].filter(Boolean) as string[];
+
+  if (queryErrors.length > 0) {
+    // Логируем в серверные логи (видно в Vercel -> Deployments -> Functions/Logs)
+    // и одновременно показываем прямо на странице — раньше эти ошибки
+    // молча проглатывались, из-за чего было невозможно понять,
+    // что именно пошло не так.
+    console.error('AdminRoomsPage query errors:', queryErrors);
+  }
 
   const typedRooms = (rooms ?? []) as Room[];
   const typedActiveStays = (activeStays ?? []) as ActiveStayRow[];
@@ -61,21 +80,31 @@ export default async function AdminRoomsPage() {
   const unassigned = typedGuestProfiles.filter((p) => !activeUserIds.has(p.id));
 
   return (
-    <AdminRoomsScreen
-      rooms={typedRooms}
-      residents={typedActiveStays.map((s) => ({
-        stayId: s.id,
-        roomId: s.room_id,
-        userId: s.user_id,
-        fullName: s.profiles?.[0]?.full_name ?? null,
-      }))}
-      unassigned={unassigned.map((p) => ({ id: p.id, fullName: p.full_name }))}
-      archived={typedArchived.map((s) => ({
-        stayId: s.id,
-        fullName: s.profiles?.[0]?.full_name ?? null,
-        roomNumber: s.rooms?.[0]?.room_number ?? null,
-        checkedOutAt: s.checked_out_at,
-      }))}
-    />
+    <>
+      {queryErrors.length > 0 && (
+        <div className="mb-4 rounded-xl border border-warn-border bg-warn-bg text-warn text-sm p-3 space-y-1">
+          <p className="font-medium">Ошибка загрузки данных:</p>
+          {queryErrors.map((msg) => (
+            <p key={msg}>{msg}</p>
+          ))}
+        </div>
+      )}
+      <AdminRoomsScreen
+        rooms={typedRooms}
+        residents={typedActiveStays.map((s) => ({
+          stayId: s.id,
+          roomId: s.room_id,
+          userId: s.user_id,
+          fullName: s.profiles?.[0]?.full_name ?? null,
+        }))}
+        unassigned={unassigned.map((p) => ({ id: p.id, fullName: p.full_name }))}
+        archived={typedArchived.map((s) => ({
+          stayId: s.id,
+          fullName: s.profiles?.[0]?.full_name ?? null,
+          roomNumber: s.rooms?.[0]?.room_number ?? null,
+          checkedOutAt: s.checked_out_at,
+        }))}
+      />
+    </>
   );
 }
