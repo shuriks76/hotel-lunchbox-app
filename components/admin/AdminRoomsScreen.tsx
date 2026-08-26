@@ -82,34 +82,15 @@ export default function AdminRoomsScreen({
     return map;
   }, [residents]);
 
-  function roomHasFreeSlot(room: RoomT) {
-    return (residentsByRoom.get(room.id)?.length ?? 0) < room.capacity;
-  }
-
-  function findRoomByNumber(input: string, excludeRoomId?: string) {
-    const needle = input.trim().toLowerCase();
-    if (!needle) return null;
-    return (
-      rooms.find(
-        (room) =>
-          room.room_number.trim().toLowerCase() === needle &&
-          room.id !== excludeRoomId &&
-          roomHasFreeSlot(room)
-      ) ?? null
-    );
-  }
 
   async function handleAssign(guestId: string) {
-    const room = findRoomByNumber(assignInput[guestId] ?? '');
-    if (!room) {
-      setError(t('roomNotFound'));
-      return;
-    }
+    const roomNumber = (assignInput[guestId] ?? '').trim();
+    if (!roomNumber) return;
     setAssigningGuestId(guestId);
     setError(null);
-    const { error } = await supabase.rpc('admin_assign_room', {
+    const { error } = await supabase.rpc('admin_assign_room_by_number', {
       p_user_id: guestId,
-      p_room_id: room.id,
+      p_room_number: roomNumber,
     });
     if (error) {
       setError(error.message || t('errorGeneric'));
@@ -133,16 +114,13 @@ export default function AdminRoomsScreen({
 
   async function confirmChangeRoom() {
     if (!changeRoomFor) return;
-    const room = findRoomByNumber(newRoomInput, changeRoomFor.roomId);
-    if (!room) {
-      setChangeRoomError(t('roomNotFound'));
-      return;
-    }
+    const roomNumber = newRoomInput.trim();
+    if (!roomNumber) return;
     setChangingRoom(true);
     setChangeRoomError(null);
-    const { error } = await supabase.rpc('admin_change_room', {
+    const { error } = await supabase.rpc('admin_change_room_by_number', {
       p_stay_id: changeRoomFor.stayId,
-      p_new_room_id: room.id,
+      p_room_number: roomNumber,
     });
     if (error) {
       setChangeRoomError(error.message || t('errorGeneric'));
@@ -422,14 +400,12 @@ export default function AdminRoomsScreen({
       </ConfirmModal>
 
       {/* Общий список подсказок для полей ввода номера комнаты — переиспользуется
-          и при заселении, и при смене комнаты (текущая комната жильца туда не
-          попадает, т.к. фильтруем по roomHasFreeSlot вместе с исключением ниже). */}
+          и при заселении, и при смене комнаты. Занятость не фильтруем: если
+          комната занята, об этом честно сообщит ошибка от сервера при попытке
+          заселения (там уже есть проверка вместимости). */}
       <datalist id="free-rooms-list">
         {rooms
-          .filter(
-            (room) =>
-              room.id !== changeRoomFor?.roomId && roomHasFreeSlot(room)
-          )
+          .filter((room) => room.id !== changeRoomFor?.roomId)
           .map((room) => (
             <option key={room.id} value={room.room_number} />
           ))}
