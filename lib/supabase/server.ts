@@ -39,7 +39,7 @@ export function createClient() {
         // из-за чего данные "залипают" даже после обычного обновления
         // страницы (F5) — это не браузерный кеш, обычный reload его не
         // сбрасывает. Явно отключаем кеш для всех запросов к Supabase.
-        fetch: (url, options = {}) =>
+        fetch: (url: RequestInfo | URL, options: RequestInit = {}) =>
           fetch(url, { ...options, cache: 'no-store' }),
       },
     }
