@@ -45,12 +45,12 @@ export default async function AdminRoomsPage() {
     supabase.from('rooms').select('id, room_number, capacity, is_family').order('room_number'),
     supabase
       .from('stays')
-      .select('id, room_id, user_id, checked_in_at, profiles(full_name)')
+      .select('id, room_id, user_id, checked_in_at, profiles!user_id(full_name)')
       .eq('active', true),
     supabase.from('profiles').select('id, full_name').eq('role', 'guest'),
     supabase
       .from('stays')
-      .select('id, user_id, checked_out_at, profiles(full_name), rooms(room_number)')
+      .select('id, user_id, checked_out_at, profiles!user_id(full_name), rooms(room_number)')
       .eq('active', false)
       .order('checked_out_at', { ascending: false })
       .limit(50),
