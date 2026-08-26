@@ -34,6 +34,14 @@ export function createClient() {
           }
         },
       },
+      global: {
+        // Next.js по умолчанию может закешировать fetch-запросы (Data Cache),
+        // из-за чего данные "залипают" даже после обычного обновления
+        // страницы (F5) — это не браузерный кеш, обычный reload его не
+        // сбрасывает. Явно отключаем кеш для всех запросов к Supabase.
+        fetch: (url, options = {}) =>
+          fetch(url, { ...options, cache: 'no-store' }),
+      },
     }
   );
 }

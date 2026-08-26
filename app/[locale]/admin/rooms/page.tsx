@@ -1,6 +1,10 @@
 import { createClient } from '@/lib/supabase/server';
 import AdminRoomsScreen from '@/components/admin/AdminRoomsScreen';
 
+// Данные меняются каждым действием админа — никакого статического
+// кеширования этой страницы, всегда свежий рендер на каждый запрос.
+export const dynamic = 'force-dynamic';
+
 type Room = {
   id: string;
   room_number: string;
