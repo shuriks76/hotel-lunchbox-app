@@ -15,7 +15,8 @@
     "googleButton": "Продолжить с Google",
     "orDivider": "или",
     "errorGeneric": "Что-то пошло не так. Попробуйте ещё раз.",
-    "checkEmail": "Проверьте почту, чтобы подтвердить аккаунт."
+    "checkEmail": "Проверьте почту, чтобы подтвердить аккаунт.",
+    "fullNameLabel": "Ваше имя"
   },
   "waiting": {
     "title": "Ещё немного",
@@ -91,6 +92,25 @@
     "cancel": "Отмена",
     "errorGeneric": "Не получилось, попробуйте ещё раз.",
     "guestNoName": "Без имени",
-    "roomNotFound": "Такой свободной комнаты нет — проверьте номер."
+    "roomNotFound": "Такой свободной комнаты нет — проверьте номер.",
+    "roomFull": "Эта комната уже полностью занята."
+  },
+  "adminOrders": {
+    "weekdayMon": "Пн",
+    "weekdayTue": "Вт",
+    "weekdayWed": "Ср",
+    "weekdayThu": "Чт",
+    "weekdayFri": "Пт",
+    "weekdaySat": "Сб",
+    "weekdaySun": "Вс",
+    "closedHint": "Приём заказов на эту дату закрыт",
+    "emptyForDate": "На эту дату заказов нет.",
+    "mealBreakfast": "Завтрак",
+    "mealLunch": "Обед",
+    "mealDinner": "Ужин",
+    "issueButton": "Отметить выданным",
+    "issuedBadge": "Выдано",
+    "issueModalTitle": "Отметить заказ выданным?",
+    "issueModalDescription": "{meal}, комната № {room}. Это действие нельзя отменить в интерфейсе."
   }
 }

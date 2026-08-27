@@ -15,7 +15,8 @@
     "googleButton": "Continue with Google",
     "orDivider": "or",
     "errorGeneric": "Something went wrong. Please try again.",
-    "checkEmail": "Check your email to confirm your account."
+    "checkEmail": "Check your email to confirm your account.",
+    "fullNameLabel": "Your name"
   },
   "waiting": {
     "title": "Almost there",
@@ -91,6 +92,25 @@
     "cancel": "Cancel",
     "errorGeneric": "Something went wrong, please try again.",
     "guestNoName": "No name",
-    "roomNotFound": "No free room with that number — check and try again."
+    "roomNotFound": "No free room with that number — check and try again.",
+    "roomFull": "This room is already fully occupied."
+  },
+  "adminOrders": {
+    "weekdayMon": "Mon",
+    "weekdayTue": "Tue",
+    "weekdayWed": "Wed",
+    "weekdayThu": "Thu",
+    "weekdayFri": "Fri",
+    "weekdaySat": "Sat",
+    "weekdaySun": "Sun",
+    "closedHint": "Ordering is closed for this date",
+    "emptyForDate": "No orders for this date.",
+    "mealBreakfast": "Breakfast",
+    "mealLunch": "Lunch",
+    "mealDinner": "Dinner",
+    "issueButton": "Mark as issued",
+    "issuedBadge": "Issued",
+    "issueModalTitle": "Mark this order as issued?",
+    "issueModalDescription": "{meal}, room № {room}. This can't be undone in the interface."
   }
 }

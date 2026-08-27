@@ -15,7 +15,8 @@
     "googleButton": "Продовжити з Google",
     "orDivider": "або",
     "errorGeneric": "Щось пішло не так. Спробуйте ще раз.",
-    "checkEmail": "Перевірте пошту, щоб підтвердити акаунт."
+    "checkEmail": "Перевірте пошту, щоб підтвердити акаунт.",
+    "fullNameLabel": "Ваше ім'я"
   },
   "waiting": {
     "title": "Ще трохи",
@@ -91,6 +92,25 @@
     "cancel": "Скасувати",
     "errorGeneric": "Щось пішло не так, спробуйте ще раз.",
     "guestNoName": "Без імені",
-    "roomNotFound": "Такої вільної кімнати немає — перевірте номер."
+    "roomNotFound": "Такої вільної кімнати немає — перевірте номер.",
+    "roomFull": "Ця кімната вже повністю зайнята."
+  },
+  "adminOrders": {
+    "weekdayMon": "Пн",
+    "weekdayTue": "Вт",
+    "weekdayWed": "Ср",
+    "weekdayThu": "Чт",
+    "weekdayFri": "Пт",
+    "weekdaySat": "Сб",
+    "weekdaySun": "Нд",
+    "closedHint": "Прийом замовлень на цю дату закрито",
+    "emptyForDate": "На цю дату замовлень немає.",
+    "mealBreakfast": "Сніданок",
+    "mealLunch": "Обід",
+    "mealDinner": "Вечеря",
+    "issueButton": "Позначити виданим",
+    "issuedBadge": "Видано",
+    "issueModalTitle": "Позначити замовлення виданим?",
+    "issueModalDescription": "{meal}, кімната № {room}. Це неможливо скасувати в інтерфейсі."
   }
 }

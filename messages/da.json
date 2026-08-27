@@ -15,7 +15,8 @@
     "googleButton": "Fortsæt med Google",
     "orDivider": "eller",
     "errorGeneric": "Noget gik galt. Prøv igen.",
-    "checkEmail": "Tjek din email for at bekræfte din konto."
+    "checkEmail": "Tjek din email for at bekræfte din konto.",
+    "fullNameLabel": "Dit navn"
   },
   "waiting": {
     "title": "Næsten der",
@@ -91,6 +92,25 @@
     "cancel": "Annuller",
     "errorGeneric": "Noget gik galt, prøv igen.",
     "guestNoName": "Intet navn",
-    "roomNotFound": "Intet ledigt værelse med det nummer — tjek og prøv igen."
+    "roomNotFound": "Intet ledigt værelse med det nummer — tjek og prøv igen.",
+    "roomFull": "Dette værelse er allerede fuldt optaget."
+  },
+  "adminOrders": {
+    "weekdayMon": "Man",
+    "weekdayTue": "Tir",
+    "weekdayWed": "Ons",
+    "weekdayThu": "Tor",
+    "weekdayFri": "Fre",
+    "weekdaySat": "Lør",
+    "weekdaySun": "Søn",
+    "closedHint": "Bestilling er lukket for denne dato",
+    "emptyForDate": "Ingen bestillinger på denne dato.",
+    "mealBreakfast": "Morgenmad",
+    "mealLunch": "Frokost",
+    "mealDinner": "Aftensmad",
+    "issueButton": "Marker som udleveret",
+    "issuedBadge": "Udleveret",
+    "issueModalTitle": "Marker bestillingen som udleveret?",
+    "issueModalDescription": "{meal}, værelse nr. {room}. Kan ikke fortrydes i grænsefladen."
   }
 }
