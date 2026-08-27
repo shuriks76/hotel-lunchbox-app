@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/client';
@@ -30,11 +30,34 @@ export default function AdminOrdersScreen({ dates, todayISO, initialOrders }: Pr
   const tAdmin = useTranslations('admin');
   const locale = useLocale();
   const router = useRouter();
-  const supabase = createClient();
+  const [supabase] = useState(() => createClient());
 
   const [selectedDate, setSelectedDate] = useState<string>(
     dates.includes(todayISO) ? todayISO : dates[0]
   );
+
+  // Живое обновление: как только гость добавляет/убирает заказ (или другой
+  // администратор отмечает выдачу), пересчитываем список — без перезагрузки
+  // страницы. Пересобираем данные через router.refresh() (а не патчим
+  // локальный state вручную), т.к. только сервер знает имя гостя и номер
+  // комнаты — Realtime присылает только сырые колонки таблицы orders.
+  useEffect(() => {
+    const channel = supabase
+      .channel('admin-orders-live')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'orders' },
+        () => {
+          router.refresh();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [supabase, router]);
+
   const [issueTarget, setIssueTarget] = useState<OrderItem | null>(null);
   const [issuing, setIssuing] = useState(false);
   const [issueError, setIssueError] = useState<string | null>(null);
