@@ -121,7 +121,9 @@
     "themeDark": "Dark",
     "themeLight": "Light",
     "languageLabel": "Interface language",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "wantsAdminLabel": "I want to become a hotel administrator",
+    "wantsAdminHint": "The owner will see you as a candidate, as long as you're not checked into a room."
   },
   "adminAdmins": {
     "staffTitle": "Admins & owner",
@@ -131,11 +133,10 @@
     "thatsYou": "(that's you)",
     "changeRoleButton": "Change role",
     "promoteTitle": "Grant admin access",
-    "promoteHint": "Enter a registered guest's name to grant them access.",
-    "promotePlaceholder": "Guest name",
+    "promoteHint": "Guests appear here once they mark \"I want to become a hotel administrator\" in their profile, and only while not currently checked into a room.",
     "promoteButton": "Grant access",
-    "guestNotFound": "No registered guest found with that name.",
     "modalTitle": "Change this person's role?",
-    "modalDescription": "{name} — this grants access to every guest's personal data. Takes effect immediately."
+    "modalDescription": "{name} — this grants access to every guest's personal data. Takes effect immediately.",
+    "candidatesEmpty": "No one has marked themselves as a candidate yet."
   }
 }

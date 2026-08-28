@@ -121,7 +121,9 @@
     "themeDark": "Mørkt",
     "themeLight": "Lyst",
     "languageLabel": "Sprog",
-    "signOut": "Log ud"
+    "signOut": "Log ud",
+    "wantsAdminLabel": "Jeg vil gerne være hoteladministrator",
+    "wantsAdminHint": "Ejeren ser dig som kandidat, så længe du ikke bor på et værelse."
   },
   "adminAdmins": {
     "staffTitle": "Administratorer & ejer",
@@ -131,11 +133,10 @@
     "thatsYou": "(det er dig)",
     "changeRoleButton": "Skift rolle",
     "promoteTitle": "Giv adminadgang",
-    "promoteHint": "Indtast navnet på en registreret gæst for at give adgang.",
-    "promotePlaceholder": "Gæstens navn",
+    "promoteHint": "Gæster vises her, når de selv markerer \"Jeg vil gerne være hoteladministrator\" i deres profil, og kun mens de ikke aktuelt bor på et værelse.",
     "promoteButton": "Giv adgang",
-    "guestNotFound": "Ingen registreret gæst fundet med det navn.",
     "modalTitle": "Skift denne persons rolle?",
-    "modalDescription": "{name} — dette giver adgang til alle gæsters personlige data. Træder i kraft med det samme."
+    "modalDescription": "{name} — dette giver adgang til alle gæsters personlige data. Træder i kraft med det samme.",
+    "candidatesEmpty": "Ingen har endnu markeret sig som kandidat."
   }
 }

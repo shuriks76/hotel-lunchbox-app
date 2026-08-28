@@ -8,6 +8,7 @@ type ProfileRow = {
   id: string;
   full_name: string;
   role: 'guest' | 'admin' | 'owner';
+  wants_admin: boolean;
 };
 
 export default async function AdminAdminsPage({
@@ -33,16 +34,24 @@ export default async function AdminAdminsPage({
     return;
   }
 
-  const { data: profiles, error } = await supabase
-    .from('profiles')
-    .select('id, full_name, role')
-    .order('full_name');
+  const [{ data: profiles, error }, { data: activeStays }] = await Promise.all([
+    supabase.from('profiles').select('id, full_name, role, wants_admin').order('full_name'),
+    supabase.from('stays').select('user_id').eq('active', true),
+  ]);
 
   if (error) {
     console.error('AdminAdminsPage query error:', error.message);
   }
 
   const typedProfiles = (profiles ?? []) as ProfileRow[];
+  const activeUserIds = new Set((activeStays ?? []).map((s) => s.user_id));
+
+  // Кандидат виден владельцу, только если сам отметил желание в профиле
+  // И прямо сейчас не заселён — как только его заселяют или назначают
+  // ролью, он естественным образом пропадает из этого списка.
+  const candidates = typedProfiles.filter(
+    (p) => p.role === 'guest' && p.wants_admin && !activeUserIds.has(p.id)
+  );
 
   return (
     <>
@@ -54,7 +63,7 @@ export default async function AdminAdminsPage({
       <AdminAdminsScreen
         currentUserId={user!.id}
         staff={typedProfiles.filter((p) => p.role === 'admin' || p.role === 'owner')}
-        guests={typedProfiles.filter((p) => p.role === 'guest')}
+        candidates={candidates}
       />
     </>
   );

@@ -6,6 +6,7 @@ import { Link, useRouter } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/client';
 import ThemeToggle from '@/components/ThemeToggle';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import WantsAdminToggle from '@/components/WantsAdminToggle';
 
 export default function ProfilePage() {
   const t = useTranslations('profile');
@@ -51,6 +52,10 @@ export default function ProfilePage() {
 
         <div className="rounded-card bg-surface border border-border p-4">
           <LanguageSwitcher />
+        </div>
+
+        <div className="rounded-card bg-surface border border-border p-4">
+          <WantsAdminToggle />
         </div>
 
         <button

@@ -12,29 +12,20 @@ type ProfileRow = { id: string; full_name: string; role: Role };
 type Props = {
   currentUserId: string;
   staff: ProfileRow[];
-  guests: ProfileRow[];
+  candidates: ProfileRow[];
 };
 
-export default function AdminAdminsScreen({ currentUserId, staff, guests }: Props) {
+export default function AdminAdminsScreen({ currentUserId, staff, candidates }: Props) {
   const t = useTranslations('adminAdmins');
   const tAdmin = useTranslations('admin');
   const router = useRouter();
   const [supabase] = useState(() => createClient());
 
-  // Модалка смены роли (и для существующих admin/owner, и для повышения гостя)
+  // Модалка смены роли (и для существующих admin/owner, и для повышения кандидата)
   const [target, setTarget] = useState<ProfileRow | null>(null);
   const [newRole, setNewRole] = useState<Role>('admin');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // Поле повышения гостя
-  const [guestInput, setGuestInput] = useState('');
-
-  function findGuestByName(input: string): ProfileRow | null {
-    const needle = input.trim().toLowerCase();
-    if (!needle) return null;
-    return guests.find((g) => g.full_name.trim().toLowerCase() === needle) ?? null;
-  }
 
   function openChangeRole(profile: ProfileRow, suggestedRole: Role) {
     setTarget(profile);
@@ -57,7 +48,6 @@ export default function AdminAdminsScreen({ currentUserId, staff, guests }: Prop
     }
     setSaving(false);
     setTarget(null);
-    setGuestInput('');
     router.refresh();
   }
 
@@ -117,44 +107,33 @@ export default function AdminAdminsScreen({ currentUserId, staff, guests }: Prop
         </ul>
       </section>
 
-      {/* Повышение гостя до администратора */}
+      {/* Кандидаты — гости, сами отметившие в профиле "хочу стать
+          администратором" и не заселённые прямо сейчас */}
       <section className="rounded-2xl bg-surface border border-border p-4 space-y-3">
         <h2 className="font-semibold text-ink">{t('promoteTitle')}</h2>
         <p className="text-sm text-ink-muted">{t('promoteHint')}</p>
-        <div className="flex flex-wrap items-center gap-2">
-          <input
-            type="text"
-            list="guest-names-list"
-            value={guestInput}
-            onChange={(e) => setGuestInput(e.target.value)}
-            placeholder={t('promotePlaceholder')}
-            className="flex-1 min-w-[160px] rounded-lg border border-border bg-surface-raised px-3 py-2 text-sm text-ink"
-          />
-          <datalist id="guest-names-list">
-            {guests.map((g) => (
-              <option key={g.id} value={g.full_name} />
+        {candidates.length === 0 ? (
+          <p className="text-sm text-ink-muted">{t('candidatesEmpty')}</p>
+        ) : (
+          <ul className="space-y-2">
+            {candidates.map((c) => (
+              <li
+                key={c.id}
+                className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-surface-raised px-3 py-2.5"
+              >
+                <span className="text-sm text-ink">
+                  {c.full_name || tAdmin('guestNoName')}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => openChangeRole(c, 'admin')}
+                  className="text-xs px-3 py-1.5 rounded-full bg-gold text-white hover:opacity-90 transition-opacity"
+                >
+                  {t('promoteButton')}
+                </button>
+              </li>
             ))}
-          </datalist>
-          <button
-            type="button"
-            disabled={!guestInput.trim()}
-            onClick={() => {
-              const guest = findGuestByName(guestInput);
-              if (!guest) {
-                setError(t('guestNotFound'));
-                return;
-              }
-              openChangeRole(guest, 'admin');
-            }}
-            className="px-4 py-2 rounded-full text-sm font-medium bg-gold text-white disabled:opacity-40 hover:opacity-90 transition-opacity"
-          >
-            {t('promoteButton')}
-          </button>
-        </div>
-        {error && !target && (
-          <p className="text-sm text-warn bg-warn-bg border border-warn-border rounded-lg px-3 py-2">
-            {error}
-          </p>
+          </ul>
         )}
       </section>
 
