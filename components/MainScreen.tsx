@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
-import { useRouter } from '@/i18n/navigation';
+import { Link, useRouter } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { isOrderOpen, orderCutoffMs } from '@/lib/date/copenhagen';
 
@@ -175,13 +175,22 @@ export default function MainScreen({
             </p>
             <p className="text-ink font-medium">{guestName}</p>
           </div>
-          <button
-            type="button"
-            onClick={handleSignOut}
-            className="rounded-pill border border-border px-3 py-1.5 text-sm text-ink-muted hover:border-gold hover:text-gold transition-colors"
-          >
-            {t('signOut')}
-          </button>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/profile"
+              aria-label={t('profileLink')}
+              className="w-9 h-9 flex items-center justify-center rounded-full border border-border text-ink-muted hover:border-gold hover:text-gold transition-colors"
+            >
+              ⚙️
+            </Link>
+            <button
+              type="button"
+              onClick={handleSignOut}
+              className="rounded-pill border border-border px-3 py-1.5 text-sm text-ink-muted hover:border-gold hover:text-gold transition-colors"
+            >
+              {t('signOut')}
+            </button>
+          </div>
         </div>
 
         {/* Карточка комнаты */}

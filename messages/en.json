@@ -58,7 +58,8 @@
     "weekdayThu": "Thu",
     "weekdayFri": "Fri",
     "weekdaySat": "Sat",
-    "weekdaySun": "Sun"
+    "weekdaySun": "Sun",
+    "profileLink": "Profile"
   },
   "admin": {
     "navOrders": "Orders",
@@ -112,5 +113,14 @@
     "issuedBadge": "Issued",
     "issueModalTitle": "Mark this order as issued?",
     "issueModalDescription": "{meal}, room № {room}. This can't be undone in the interface."
+  },
+  "profile": {
+    "title": "Profile",
+    "back": "Back",
+    "themeLabel": "Appearance",
+    "themeDark": "Dark",
+    "themeLight": "Light",
+    "languageLabel": "Interface language",
+    "signOut": "Sign out"
   }
 }

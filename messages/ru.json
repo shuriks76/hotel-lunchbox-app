@@ -58,7 +58,8 @@
     "weekdayThu": "Чт",
     "weekdayFri": "Пт",
     "weekdaySat": "Сб",
-    "weekdaySun": "Вс"
+    "weekdaySun": "Вс",
+    "profileLink": "Профиль"
   },
   "admin": {
     "navOrders": "Заказы",
@@ -112,5 +113,14 @@
     "issuedBadge": "Выдано",
     "issueModalTitle": "Отметить заказ выданным?",
     "issueModalDescription": "{meal}, комната № {room}. Это действие нельзя отменить в интерфейсе."
+  },
+  "profile": {
+    "title": "Профиль",
+    "back": "Назад",
+    "themeLabel": "Тема оформления",
+    "themeDark": "Тёмная",
+    "themeLight": "Светлая",
+    "languageLabel": "Язык интерфейса",
+    "signOut": "Выйти"
   }
 }

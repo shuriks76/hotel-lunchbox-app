@@ -58,7 +58,8 @@
     "weekdayThu": "Tor",
     "weekdayFri": "Fre",
     "weekdaySat": "Lør",
-    "weekdaySun": "Søn"
+    "weekdaySun": "Søn",
+    "profileLink": "Profil"
   },
   "admin": {
     "navOrders": "Bestillinger",
@@ -112,5 +113,14 @@
     "issuedBadge": "Udleveret",
     "issueModalTitle": "Marker bestillingen som udleveret?",
     "issueModalDescription": "{meal}, værelse nr. {room}. Kan ikke fortrydes i grænsefladen."
+  },
+  "profile": {
+    "title": "Profil",
+    "back": "Tilbage",
+    "themeLabel": "Udseende",
+    "themeDark": "Mørkt",
+    "themeLight": "Lyst",
+    "languageLabel": "Sprog",
+    "signOut": "Log ud"
   }
 }

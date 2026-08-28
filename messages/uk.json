@@ -58,7 +58,8 @@
     "weekdayThu": "Чт",
     "weekdayFri": "Пт",
     "weekdaySat": "Сб",
-    "weekdaySun": "Нд"
+    "weekdaySun": "Нд",
+    "profileLink": "Профіль"
   },
   "admin": {
     "navOrders": "Замовлення",
@@ -112,5 +113,14 @@
     "issuedBadge": "Видано",
     "issueModalTitle": "Позначити замовлення виданим?",
     "issueModalDescription": "{meal}, кімната № {room}. Це неможливо скасувати в інтерфейсі."
+  },
+  "profile": {
+    "title": "Профіль",
+    "back": "Назад",
+    "themeLabel": "Оформлення",
+    "themeDark": "Темна",
+    "themeLight": "Світла",
+    "languageLabel": "Мова інтерфейсу",
+    "signOut": "Вийти"
   }
 }
