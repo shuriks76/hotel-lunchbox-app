@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale, getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
+import ThemeSync from '@/components/ThemeSync';
 import '../globals.css';
 
 const displayFont = Cormorant_Garamond({
@@ -67,7 +68,9 @@ export default async function LocaleLayout({
             __html: `
               try {
                 var t = localStorage.getItem('lunchbox-theme') || 'dark';
-                document.documentElement.classList.add(t === 'light' ? 'theme-light' : 'theme-dark');
+                var cl = document.documentElement.classList;
+                cl.remove('theme-dark', 'theme-light');
+                cl.add(t === 'light' ? 'theme-light' : 'theme-dark');
               } catch (e) {
                 document.documentElement.classList.add('theme-dark');
               }
@@ -76,6 +79,7 @@ export default async function LocaleLayout({
         />
       </head>
       <body className="font-sans antialiased min-h-screen">
+        <ThemeSync />
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>
