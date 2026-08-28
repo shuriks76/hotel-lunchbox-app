@@ -122,5 +122,20 @@
     "themeLight": "Light",
     "languageLabel": "Interface language",
     "signOut": "Sign out"
+  },
+  "adminAdmins": {
+    "staffTitle": "Admins & owner",
+    "roleGuest": "Guest",
+    "roleAdmin": "Admin",
+    "roleOwner": "Owner",
+    "thatsYou": "(that's you)",
+    "changeRoleButton": "Change role",
+    "promoteTitle": "Grant admin access",
+    "promoteHint": "Enter a registered guest's name to grant them access.",
+    "promotePlaceholder": "Guest name",
+    "promoteButton": "Grant access",
+    "guestNotFound": "No registered guest found with that name.",
+    "modalTitle": "Change this person's role?",
+    "modalDescription": "{name} — this grants access to every guest's personal data. Takes effect immediately."
   }
 }

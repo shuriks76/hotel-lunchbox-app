@@ -122,5 +122,20 @@
     "themeLight": "Lyst",
     "languageLabel": "Sprog",
     "signOut": "Log ud"
+  },
+  "adminAdmins": {
+    "staffTitle": "Administratorer & ejer",
+    "roleGuest": "Gæst",
+    "roleAdmin": "Admin",
+    "roleOwner": "Ejer",
+    "thatsYou": "(det er dig)",
+    "changeRoleButton": "Skift rolle",
+    "promoteTitle": "Giv adminadgang",
+    "promoteHint": "Indtast navnet på en registreret gæst for at give adgang.",
+    "promotePlaceholder": "Gæstens navn",
+    "promoteButton": "Giv adgang",
+    "guestNotFound": "Ingen registreret gæst fundet med det navn.",
+    "modalTitle": "Skift denne persons rolle?",
+    "modalDescription": "{name} — dette giver adgang til alle gæsters personlige data. Træder i kraft med det samme."
   }
 }

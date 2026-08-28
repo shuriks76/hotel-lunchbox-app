@@ -122,5 +122,20 @@
     "themeLight": "Світла",
     "languageLabel": "Мова інтерфейсу",
     "signOut": "Вийти"
+  },
+  "adminAdmins": {
+    "staffTitle": "Адміністратори та власник",
+    "roleGuest": "Гість",
+    "roleAdmin": "Адмін",
+    "roleOwner": "Власник",
+    "thatsYou": "(це ви)",
+    "changeRoleButton": "Змінити роль",
+    "promoteTitle": "Призначити адміністратора",
+    "promoteHint": "Введіть ім'я зареєстрованого гостя, щоб надати йому права.",
+    "promotePlaceholder": "Ім'я гостя",
+    "promoteButton": "Призначити",
+    "guestNotFound": "Гостя з таким ім'ям не знайдено серед зареєстрованих.",
+    "modalTitle": "Змінити роль користувача?",
+    "modalDescription": "{name} — це надання доступу до персональних даних усіх гостей готелю. Діє одразу."
   }
 }
