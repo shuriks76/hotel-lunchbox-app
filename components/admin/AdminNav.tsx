@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/client';
+import CompactLanguageSwitcher from '@/components/CompactLanguageSwitcher';
 
 export default function AdminNav({ isOwner }: { isOwner: boolean }) {
   const t = useTranslations('admin');
@@ -46,6 +47,7 @@ export default function AdminNav({ isOwner }: { isOwner: boolean }) {
           })}
         </div>
         <div className="flex items-center gap-3">
+          <CompactLanguageSwitcher />
           <button
             type="button"
             onClick={handleSignOut}
