@@ -6,6 +6,7 @@ import { useRouter } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { isOrderOpen } from '@/lib/date/copenhagen';
 import ConfirmModal from './ConfirmModal';
+import MealRing from './MealRing';
 
 type MealType = 'breakfast' | 'lunch' | 'dinner';
 const MEAL_TYPES: MealType[] = ['breakfast', 'lunch', 'dinner'];
@@ -23,9 +24,15 @@ type Props = {
   dates: string[];
   todayISO: string;
   initialOrders: OrderItem[];
+  totalResidents: number;
 };
 
-export default function AdminOrdersScreen({ dates, todayISO, initialOrders }: Props) {
+export default function AdminOrdersScreen({
+  dates,
+  todayISO,
+  initialOrders,
+  totalResidents,
+}: Props) {
   const t = useTranslations('adminOrders');
   const tAdmin = useTranslations('admin');
   const locale = useLocale();
@@ -254,38 +261,44 @@ export default function AdminOrdersScreen({ dates, todayISO, initialOrders }: Pr
         </div>
       </div>
 
-      {/* Заголовок даты + сводка по типам питания + печать/PDF */}
+      {/* Заголовок даты + печать/PDF */}
       <div className="rounded-2xl bg-surface border border-border p-4 flex flex-wrap items-center justify-between gap-3">
         <p className="font-display text-lg font-semibold text-ink capitalize">
           {selectedDateLabel}
         </p>
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="flex gap-3 text-sm text-ink-muted">
-            {MEAL_TYPES.map((m) => (
-              <span key={m} className="flex items-center gap-1">
-                <span aria-hidden="true">{mealIcons[m]}</span> {mealTotals[m]}
-              </span>
-            ))}
-          </div>
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={handlePrint}
-              disabled={groupedByRoom.length === 0}
-              className="text-xs px-3 py-1.5 rounded-full border border-border text-ink-muted hover:border-gold hover:text-gold transition-colors disabled:opacity-40"
-            >
-              {t('printButton')}
-            </button>
-            <button
-              type="button"
-              onClick={handleDownloadPdf}
-              disabled={groupedByRoom.length === 0 || generatingPdf}
-              className="text-xs px-3 py-1.5 rounded-full bg-gold text-white hover:opacity-90 transition-opacity disabled:opacity-40"
-            >
-              {generatingPdf ? t('generatingPdf') : t('downloadPdfButton')}
-            </button>
-          </div>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={handlePrint}
+            disabled={groupedByRoom.length === 0}
+            className="text-xs px-3 py-1.5 rounded-full border border-border text-ink-muted hover:border-gold hover:text-gold transition-colors disabled:opacity-40"
+          >
+            {t('printButton')}
+          </button>
+          <button
+            type="button"
+            onClick={handleDownloadPdf}
+            disabled={groupedByRoom.length === 0 || generatingPdf}
+            className="text-xs px-3 py-1.5 rounded-full bg-gold text-white hover:opacity-90 transition-opacity disabled:opacity-40"
+          >
+            {generatingPdf ? t('generatingPdf') : t('downloadPdfButton')}
+          </button>
         </div>
+      </div>
+
+      {/* Круговая сводка — сколько заказано каждого типа питания, в
+          процентах от всех текущих жильцов отеля */}
+      <div className="rounded-2xl bg-surface border border-border p-4 flex justify-center gap-6 sm:gap-10">
+        {MEAL_TYPES.map((m) => (
+          <MealRing
+            key={m}
+            icon={mealIcons[m]}
+            label={mealLabels[m]}
+            count={mealTotals[m]}
+            percent={totalResidents > 0 ? (mealTotals[m] / totalResidents) * 100 : 0}
+            color={m === 'breakfast' ? 'gold' : m === 'lunch' ? 'open' : 'warn'}
+          />
+        ))}
       </div>
 
       {/* Список по комнатам */}
@@ -300,7 +313,7 @@ export default function AdminOrdersScreen({ dates, todayISO, initialOrders }: Pr
               key={roomNumber}
               className="rounded-2xl bg-surface border border-border p-4 space-y-2"
             >
-              <p className="font-display text-xl font-semibold text-ink">
+              <p className="font-display text-base font-semibold text-ink">
                 № {roomNumber}
               </p>
               <ul className="space-y-2">

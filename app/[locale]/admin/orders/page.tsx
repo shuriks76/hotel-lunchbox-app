@@ -32,15 +32,18 @@ export default async function AdminOrdersPage() {
   const todayISO = copenhagenTodayISO();
   const dates = getTwoWeekRange(todayISO);
 
-  const { data, error } = await supabase
-    .from('orders')
-    .select(
-      'id, order_date, meal_type, issued_at, stay_id, stays(room_id, rooms(room_number), profiles!user_id(full_name))'
-    )
-    .gte('order_date', dates[0])
-    .lte('order_date', dates[dates.length - 1])
-    .is('cancelled_at', null)
-    .order('order_date');
+  const [{ data, error }, { count: totalResidents }] = await Promise.all([
+    supabase
+      .from('orders')
+      .select(
+        'id, order_date, meal_type, issued_at, stay_id, stays(room_id, rooms(room_number), profiles!user_id(full_name))'
+      )
+      .gte('order_date', dates[0])
+      .lte('order_date', dates[dates.length - 1])
+      .is('cancelled_at', null)
+      .order('order_date'),
+    supabase.from('stays').select('id', { count: 'exact', head: true }).eq('active', true),
+  ]);
 
   if (error) {
     console.error('AdminOrdersPage query error:', error.message);
@@ -69,7 +72,12 @@ export default async function AdminOrdersPage() {
           Ошибка загрузки данных: {error.message}
         </div>
       )}
-      <AdminOrdersScreen dates={dates} todayISO={todayISO} initialOrders={orders} />
+      <AdminOrdersScreen
+        dates={dates}
+        todayISO={todayISO}
+        initialOrders={orders}
+        totalResidents={totalResidents ?? 0}
+      />
     </>
   );
 }
