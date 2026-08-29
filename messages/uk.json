@@ -113,7 +113,10 @@
     "issueButton": "Позначити виданим",
     "issuedBadge": "Видано",
     "issueModalTitle": "Позначити замовлення виданим?",
-    "issueModalDescription": "{meal}, кімната № {room}. Це неможливо скасувати в інтерфейсі."
+    "issueModalDescription": "{meal}, кімната № {room}. Це неможливо скасувати в інтерфейсі.",
+    "printButton": "Друк",
+    "downloadPdfButton": "Завантажити PDF",
+    "generatingPdf": "Готуємо PDF…"
   },
   "profile": {
     "title": "Профіль",

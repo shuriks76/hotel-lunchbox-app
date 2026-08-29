@@ -113,7 +113,10 @@
     "issueButton": "Mark as issued",
     "issuedBadge": "Issued",
     "issueModalTitle": "Mark this order as issued?",
-    "issueModalDescription": "{meal}, room № {room}. This can't be undone in the interface."
+    "issueModalDescription": "{meal}, room № {room}. This can't be undone in the interface.",
+    "printButton": "Print",
+    "downloadPdfButton": "Download PDF",
+    "generatingPdf": "Preparing PDF…"
   },
   "profile": {
     "title": "Profile",

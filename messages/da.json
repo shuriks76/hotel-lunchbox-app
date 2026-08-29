@@ -113,7 +113,10 @@
     "issueButton": "Marker som udleveret",
     "issuedBadge": "Udleveret",
     "issueModalTitle": "Marker bestillingen som udleveret?",
-    "issueModalDescription": "{meal}, værelse nr. {room}. Kan ikke fortrydes i grænsefladen."
+    "issueModalDescription": "{meal}, værelse nr. {room}. Kan ikke fortrydes i grænsefladen.",
+    "printButton": "Print",
+    "downloadPdfButton": "Download PDF",
+    "generatingPdf": "Forbereder PDF…"
   },
   "profile": {
     "title": "Profil",

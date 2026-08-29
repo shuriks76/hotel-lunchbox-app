@@ -61,6 +61,7 @@ export default function AdminOrdersScreen({ dates, todayISO, initialOrders }: Pr
   const [issueTarget, setIssueTarget] = useState<OrderItem | null>(null);
   const [issuing, setIssuing] = useState(false);
   const [issueError, setIssueError] = useState<string | null>(null);
+  const [generatingPdf, setGeneratingPdf] = useState(false);
 
   const weekdayKeys = [
     'weekdayMon', 'weekdayTue', 'weekdayWed', 'weekdayThu',
@@ -129,8 +130,84 @@ export default function AdminOrdersScreen({ dates, todayISO, initialOrders }: Pr
     router.refresh();
   }
 
+  function handlePrint() {
+    window.print();
+  }
+
+  async function handleDownloadPdf() {
+    setGeneratingPdf(true);
+    try {
+      // Динамический импорт — react-pdf/renderer довольно тяжёлая
+      // библиотека, незачем грузить её в общий бандл страницы, если
+      // человек ни разу не нажмёт "Скачать PDF".
+      const [{ pdf }, { default: OrdersPdfDocument }] = await Promise.all([
+        import('@react-pdf/renderer'),
+        import('./OrdersPdfDocument'),
+      ]);
+
+      const logoUrl = `${window.location.origin}/logo/profil-hotels-logo-white-bg.png`;
+
+      const blob = await pdf(
+        <OrdersPdfDocument
+          logoUrl={logoUrl}
+          dateLabel={selectedDateLabel}
+          mealLabels={mealLabels}
+          noNameLabel={tAdmin('guestNoName')}
+          issuedLabel={t('issuedBadge')}
+          groupedByRoom={groupedByRoom}
+        />
+      ).toBlob();
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `lunchbox-orders-${selectedDate}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } finally {
+      setGeneratingPdf(false);
+    }
+  }
+
   return (
-    <div className="space-y-4">
+    <>
+      {/* Печатная версия — видна только при печати (window.print() /
+          "Сохранить как PDF" из диалога печати браузера), на экране
+          скрыта. Отдельно от неё есть кнопка "Скачать PDF" ниже —
+          та генерирует файл через react-pdf/renderer, без диалога
+          печати браузера. */}
+      <div className="hidden print:block p-8">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/logo/profil-hotels-logo-white-bg.png"
+          alt=""
+          className="h-16 w-auto mb-4"
+        />
+        <h1 className="text-xl font-bold mb-6 capitalize">
+          {selectedDateLabel}
+        </h1>
+        {groupedByRoom.map(([roomNumber, items]) => (
+          <div key={roomNumber} className="mb-4 break-inside-avoid">
+            <p className="font-bold border-b border-black pb-1 mb-1">
+              № {roomNumber}
+            </p>
+            {items
+              .sort((a, b) => MEAL_TYPES.indexOf(a.mealType) - MEAL_TYPES.indexOf(b.mealType))
+              .map((item) => (
+                <div key={item.id} className="flex justify-between text-sm py-0.5">
+                  <span>
+                    {mealLabels[item.mealType]} — {item.guestName || tAdmin('guestNoName')}
+                  </span>
+                  {item.issuedAt && <span>✓ {t('issuedBadge')}</span>}
+                </div>
+              ))}
+          </div>
+        ))}
+      </div>
+
+      <div className="space-y-4 print:hidden">
       {/* Календарь */}
       <div className="rounded-2xl bg-surface border border-border p-4 space-y-3">
         <div className="grid grid-cols-7 gap-1.5 text-center">
@@ -177,17 +254,37 @@ export default function AdminOrdersScreen({ dates, todayISO, initialOrders }: Pr
         </div>
       </div>
 
-      {/* Заголовок даты + сводка по типам питания */}
+      {/* Заголовок даты + сводка по типам питания + печать/PDF */}
       <div className="rounded-2xl bg-surface border border-border p-4 flex flex-wrap items-center justify-between gap-3">
         <p className="font-display text-lg font-semibold text-ink capitalize">
           {selectedDateLabel}
         </p>
-        <div className="flex gap-3 text-sm text-ink-muted">
-          {MEAL_TYPES.map((m) => (
-            <span key={m} className="flex items-center gap-1">
-              <span aria-hidden="true">{mealIcons[m]}</span> {mealTotals[m]}
-            </span>
-          ))}
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="flex gap-3 text-sm text-ink-muted">
+            {MEAL_TYPES.map((m) => (
+              <span key={m} className="flex items-center gap-1">
+                <span aria-hidden="true">{mealIcons[m]}</span> {mealTotals[m]}
+              </span>
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={handlePrint}
+              disabled={groupedByRoom.length === 0}
+              className="text-xs px-3 py-1.5 rounded-full border border-border text-ink-muted hover:border-gold hover:text-gold transition-colors disabled:opacity-40"
+            >
+              {t('printButton')}
+            </button>
+            <button
+              type="button"
+              onClick={handleDownloadPdf}
+              disabled={groupedByRoom.length === 0 || generatingPdf}
+              className="text-xs px-3 py-1.5 rounded-full bg-gold text-white hover:opacity-90 transition-opacity disabled:opacity-40"
+            >
+              {generatingPdf ? t('generatingPdf') : t('downloadPdfButton')}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -266,6 +363,7 @@ export default function AdminOrdersScreen({ dates, todayISO, initialOrders }: Pr
         onConfirm={confirmIssue}
         onCancel={() => setIssueTarget(null)}
       />
-    </div>
+      </div>
+    </>
   );
 }

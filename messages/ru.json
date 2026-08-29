@@ -113,7 +113,10 @@
     "issueButton": "Отметить выданным",
     "issuedBadge": "Выдано",
     "issueModalTitle": "Отметить заказ выданным?",
-    "issueModalDescription": "{meal}, комната № {room}. Это действие нельзя отменить в интерфейсе."
+    "issueModalDescription": "{meal}, комната № {room}. Это действие нельзя отменить в интерфейсе.",
+    "printButton": "Печать",
+    "downloadPdfButton": "Скачать PDF",
+    "generatingPdf": "Готовим PDF…"
   },
   "profile": {
     "title": "Профиль",

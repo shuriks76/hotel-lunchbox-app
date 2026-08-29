@@ -24,7 +24,7 @@ export default function AdminNav({ isOwner }: { isOwner: boolean }) {
   }
 
   return (
-    <nav className="bg-surface border-b border-border">
+    <nav className="bg-surface border-b border-border print:hidden">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14">
         <div className="flex items-center gap-1">
           {tabs.map((tab) => {
