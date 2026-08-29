@@ -54,9 +54,7 @@ export default function ProfilePage() {
           <LanguageSwitcher />
         </div>
 
-        <div className="rounded-card bg-surface border border-border p-4">
-          <WantsAdminToggle />
-        </div>
+        <WantsAdminToggle />
 
         <button
           type="button"

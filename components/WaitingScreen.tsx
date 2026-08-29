@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { useRouter } from '@/i18n/navigation';
+import { Link, useRouter } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/client';
 
 export default function WaitingScreen() {
@@ -54,13 +54,22 @@ export default function WaitingScreen() {
           </button>
         </div>
 
-        <button
-          type="button"
-          onClick={handleSignOut}
-          className="text-sm text-ink-muted hover:text-gold transition-colors"
-        >
-          {t('signOut')}
-        </button>
+        <div className="flex items-center justify-center gap-4">
+          <Link
+            href="/profile"
+            className="text-sm text-ink-muted hover:text-gold transition-colors"
+          >
+            {t('profileLink')}
+          </Link>
+          <span className="text-border">·</span>
+          <button
+            type="button"
+            onClick={handleSignOut}
+            className="text-sm text-ink-muted hover:text-gold transition-colors"
+          >
+            {t('signOut')}
+          </button>
+        </div>
       </div>
     </main>
   );

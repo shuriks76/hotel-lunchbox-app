@@ -15,6 +15,7 @@ export default function WantsAdminToggle() {
   const t = useTranslations('profile');
   const [supabase] = useState(() => createClient());
   const [checked, setChecked] = useState<boolean | null>(null);
+  const [hasActiveStay, setHasActiveStay] = useState<boolean | null>(null);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -24,12 +25,20 @@ export default function WantsAdminToggle() {
         data: { user },
       } = await supabase.auth.getUser();
       if (!user) return;
-      const { data } = await supabase
-        .from('profiles')
-        .select('wants_admin')
-        .eq('id', user.id)
-        .single();
-      if (active) setChecked(data?.wants_admin ?? false);
+
+      const [{ data: profile }, { data: stay }] = await Promise.all([
+        supabase.from('profiles').select('wants_admin').eq('id', user.id).single(),
+        supabase
+          .from('stays')
+          .select('id')
+          .eq('user_id', user.id)
+          .eq('active', true)
+          .maybeSingle(),
+      ]);
+
+      if (!active) return;
+      setChecked(profile?.wants_admin ?? false);
+      setHasActiveStay(!!stay);
     })();
     return () => {
       active = false;
@@ -48,10 +57,11 @@ export default function WantsAdminToggle() {
     setSaving(false);
   }
 
-  if (checked === null) return <div className="h-10" />;
+  if (checked === null || hasActiveStay === null) return <div className="h-16" />;
+  if (hasActiveStay) return null;
 
   return (
-    <div className="space-y-1.5">
+    <div className="rounded-card bg-surface border border-border p-4 space-y-1.5">
       <label className="flex items-center justify-between gap-3 cursor-pointer select-none">
         <span className="text-sm text-ink">{t('wantsAdminLabel')}</span>
         <input

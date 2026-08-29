@@ -23,7 +23,8 @@
     "body": "Please stop by the reception desk so we can assign your room.",
     "signOut": "Sign out",
     "refreshButton": "I've checked in — refresh",
-    "refreshing": "Checking…"
+    "refreshing": "Checking…",
+    "profileLink": "Profile"
   },
   "root": {
     "stepDone": "Step 2 done",

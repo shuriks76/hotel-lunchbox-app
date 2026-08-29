@@ -23,7 +23,8 @@
     "body": "Kom forbi receptionen, så vi kan tildele dit værelse.",
     "signOut": "Log ud",
     "refreshButton": "Jeg er tjekket ind — opdater",
-    "refreshing": "Tjekker…"
+    "refreshing": "Tjekker…",
+    "profileLink": "Profil"
   },
   "root": {
     "stepDone": "Trin 2 klar",
