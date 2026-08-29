@@ -124,7 +124,8 @@
     "languageLabel": "Sprog",
     "signOut": "Log ud",
     "wantsAdminLabel": "Jeg vil gerne være hoteladministrator",
-    "wantsAdminHint": "Ejeren ser dig som kandidat, så længe du ikke bor på et værelse."
+    "wantsAdminHint": "Ejeren ser dig som kandidat, så længe du ikke bor på et værelse.",
+    "privacyLink": "Privatlivspolitik"
   },
   "adminAdmins": {
     "staffTitle": "Administratorer & ejer",

@@ -46,12 +46,6 @@ export default function AdminNav({ isOwner }: { isOwner: boolean }) {
           })}
         </div>
         <div className="flex items-center gap-3">
-          <Link
-            href="/"
-            className="text-sm text-ink-muted hover:text-gold transition-colors hidden sm:inline"
-          >
-            {t('backToApp')}
-          </Link>
           <button
             type="button"
             onClick={handleSignOut}

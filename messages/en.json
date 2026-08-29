@@ -124,7 +124,8 @@
     "languageLabel": "Interface language",
     "signOut": "Sign out",
     "wantsAdminLabel": "I want to become a hotel administrator",
-    "wantsAdminHint": "The owner will see you as a candidate, as long as you're not checked into a room."
+    "wantsAdminHint": "The owner will see you as a candidate, as long as you're not checked into a room.",
+    "privacyLink": "Privacy Policy"
   },
   "adminAdmins": {
     "staffTitle": "Admins & owner",

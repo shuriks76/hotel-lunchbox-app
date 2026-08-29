@@ -56,6 +56,13 @@ export default function ProfilePage() {
 
         <WantsAdminToggle />
 
+        <Link
+          href="/privacy"
+          className="block text-center text-sm text-ink-muted hover:text-gold transition-colors"
+        >
+          {t('privacyLink')}
+        </Link>
+
         <button
           type="button"
           onClick={handleSignOut}
