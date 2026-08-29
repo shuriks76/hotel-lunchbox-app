@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
-import { useRouter } from '@/i18n/navigation';
+import { useRouter, usePathname } from '@/i18n/navigation';
+import { routing } from '@/i18n/routing';
 
 type Mode = 'signIn' | 'signUp';
 
@@ -12,6 +13,8 @@ export default function LoginPage() {
   const t = useTranslations('login');
   const tApp = useTranslations('app');
   const router = useRouter();
+  const pathname = usePathname();
+  const locale = useLocale();
   const supabase = createClient();
 
   const [mode, setMode] = useState<Mode>('signIn');
@@ -67,6 +70,24 @@ export default function LoginPage() {
 
   return (
     <main className="min-h-screen flex items-center justify-center p-6">
+      <div className="fixed top-4 right-4 flex gap-1 bg-surface/80 backdrop-blur rounded-full p-1 border border-border">
+        {routing.locales.map((loc) => (
+          <button
+            key={loc}
+            type="button"
+            onClick={() => router.replace(pathname, { locale: loc })}
+            className={
+              'px-2.5 py-1 rounded-full text-xs font-medium uppercase transition-colors ' +
+              (loc === locale
+                ? 'bg-gold text-surface'
+                : 'text-ink-muted hover:text-ink')
+            }
+          >
+            {loc}
+          </button>
+        ))}
+      </div>
+
       <div className="w-full max-w-sm space-y-6">
         {/* Логотип — светлая версия на прозрачном фоне, т.к. страница тёмная */}
         <div className="flex flex-col items-center gap-1">
