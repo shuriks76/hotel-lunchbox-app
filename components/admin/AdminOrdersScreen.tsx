@@ -313,7 +313,7 @@ export default function AdminOrdersScreen({
               key={roomNumber}
               className="rounded-2xl bg-surface border border-border p-4 space-y-2"
             >
-              <p className="font-display text-base font-semibold text-ink">
+              <p className="font-display text-2xl font-semibold text-ink">
                 № {roomNumber}
               </p>
               <ul className="space-y-2">
