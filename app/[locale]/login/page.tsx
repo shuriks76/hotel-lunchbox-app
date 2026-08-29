@@ -70,7 +70,7 @@ export default function LoginPage() {
 
   return (
     <main className="min-h-screen flex items-center justify-center p-6">
-      <div className="fixed top-4 right-4 flex gap-1 bg-surface/80 backdrop-blur rounded-full p-1 border border-border">
+      <div className="fixed top-4 left-1/2 -translate-x-1/2 flex gap-1 bg-surface/80 backdrop-blur rounded-full p-1 border border-border">
         {routing.locales.map((loc) => (
           <button
             key={loc}
