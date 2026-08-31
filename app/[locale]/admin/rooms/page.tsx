@@ -57,6 +57,7 @@ export default async function AdminRoomsPage() {
     { data: activeStays, error: activeStaysError },
     { data: guestProfiles, error: guestProfilesError },
     { data: archived, error: archivedError },
+    { data: retentionSetting },
   ] = await Promise.all([
     supabase.from('rooms').select('id, room_number, capacity, is_family').order('room_number'),
     supabase
@@ -70,7 +71,14 @@ export default async function AdminRoomsPage() {
       .eq('active', false)
       .order('checked_out_at', { ascending: false })
       .limit(50),
+    supabase
+      .from('settings')
+      .select('data_retention_months')
+      .eq('id', 1)
+      .single(),
   ]);
+
+  const retentionMonths = retentionSetting?.data_retention_months ?? 12;
 
   const queryErrors = [
     roomsError && `rooms: ${roomsError.message}`,
@@ -120,6 +128,7 @@ export default async function AdminRoomsPage() {
           roomNumber: extractRoomNumber(s.rooms),
           checkedOutAt: s.checked_out_at,
         }))}
+        retentionMonths={retentionMonths}
       />
     </>
   );

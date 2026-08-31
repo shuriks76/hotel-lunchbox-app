@@ -31,6 +31,7 @@ type Props = {
   residents: Resident[];
   unassigned: UnassignedGuest[];
   archived: ArchivedEntry[];
+  retentionMonths: number;
 };
 
 type Tab = 'rooms' | 'archive';
@@ -40,6 +41,7 @@ export default function AdminRoomsScreen({
   residents,
   unassigned,
   archived,
+  retentionMonths,
 }: Props) {
   const t = useTranslations('admin');
   const locale = useLocale();
@@ -69,8 +71,38 @@ export default function AdminRoomsScreen({
   const [restoring, setRestoring] = useState(false);
   const [restoreError, setRestoreError] = useState<string | null>(null);
 
+  // Модалка "удалить из архива" (уровень А стирания персональных
+  // данных — история проживания и заказов, сам логин-аккаунт остаётся)
+  const [deleteFor, setDeleteFor] = useState<ArchivedEntry | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+
   // Переключатель "семейная"
   const [togglingRoomId, setTogglingRoomId] = useState<string | null>(null);
+
+  const overdueThresholdMs = useMemo(() => {
+    const d = new Date();
+    d.setMonth(d.getMonth() - retentionMonths);
+    return d.getTime();
+  }, [retentionMonths]);
+
+  function isOverdue(checkedOutAt: string | null) {
+    if (!checkedOutAt) return false;
+    return new Date(checkedOutAt).getTime() < overdueThresholdMs;
+  }
+
+  const sortedArchived = useMemo(() => {
+    return [...archived].sort((a, b) => {
+      const aOverdue = isOverdue(a.checkedOutAt);
+      const bOverdue = isOverdue(b.checkedOutAt);
+      if (aOverdue !== bOverdue) return aOverdue ? -1 : 1;
+      // Внутри группы — старые (более просроченные) выше.
+      const aTime = a.checkedOutAt ? new Date(a.checkedOutAt).getTime() : 0;
+      const bTime = b.checkedOutAt ? new Date(b.checkedOutAt).getTime() : 0;
+      return aOverdue ? aTime - bTime : bTime - aTime;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [archived, overdueThresholdMs]);
 
   const residentsByRoom = useMemo(() => {
     const map = new Map<string, Resident[]>();
@@ -164,6 +196,23 @@ export default function AdminRoomsScreen({
     }
     setRestoring(false);
     setRestoreFor(null);
+    router.refresh();
+  }
+
+  async function confirmDelete() {
+    if (!deleteFor) return;
+    setDeleting(true);
+    setDeleteError(null);
+    const { error } = await supabase.rpc('admin_delete_stay', {
+      p_stay_id: deleteFor.stayId,
+    });
+    if (error) {
+      setDeleteError(error.message || t('errorGeneric'));
+      setDeleting(false);
+      return;
+    }
+    setDeleting(false);
+    setDeleteFor(null);
     router.refresh();
   }
 
@@ -339,40 +388,70 @@ export default function AdminRoomsScreen({
 
       {tab === 'archive' && (
         <section className="rounded-2xl bg-surface border border-border p-4 space-y-3">
-          {archived.length === 0 ? (
+          {retentionMonths > 0 && (
+            <p className="text-xs text-ink-muted">
+              {t('retentionNotice', { months: retentionMonths })}
+            </p>
+          )}
+          {sortedArchived.length === 0 ? (
             <p className="text-sm text-ink-muted">{t('archiveEmpty')}</p>
           ) : (
             <ul className="space-y-2">
-              {archived.map((entry) => (
-                <li
-                  key={entry.stayId}
-                  className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-surface-raised px-3 py-2.5"
-                >
-                  <div>
-                    <p className="text-sm text-ink">
-                      {entry.fullName || t('guestNoName')}{' '}
-                      <span className="text-ink-muted">
-                        № {entry.roomNumber ?? '—'}
-                      </span>
-                    </p>
-                    <p className="text-xs text-ink-muted">
-                      {t('checkedOutOn', {
-                        date: formatDate(entry.checkedOutAt),
-                      })}
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setRestoreFor(entry);
-                      setRestoreError(null);
-                    }}
-                    className="text-xs px-3 py-1.5 rounded-full bg-gold text-white hover:opacity-90 transition-opacity"
+              {sortedArchived.map((entry) => {
+                const overdue = isOverdue(entry.checkedOutAt);
+                return (
+                  <li
+                    key={entry.stayId}
+                    className={
+                      'flex flex-wrap items-center justify-between gap-2 rounded-xl px-3 py-2.5 ' +
+                      (overdue
+                        ? 'bg-warn-bg border border-warn-border'
+                        : 'bg-surface-raised')
+                    }
                   >
-                    {t('restoreButton')}
-                  </button>
-                </li>
-              ))}
+                    <div>
+                      <p className="text-sm text-ink flex items-center gap-2 flex-wrap">
+                        {entry.fullName || t('guestNoName')}{' '}
+                        <span className="text-ink-muted">
+                          № {entry.roomNumber ?? '—'}
+                        </span>
+                        {overdue && (
+                          <span className="text-[11px] px-2 py-0.5 rounded-full bg-warn text-white font-medium">
+                            {t('overdueLabel')}
+                          </span>
+                        )}
+                      </p>
+                      <p className="text-xs text-ink-muted">
+                        {t('checkedOutOn', {
+                          date: formatDate(entry.checkedOutAt),
+                        })}
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setRestoreFor(entry);
+                          setRestoreError(null);
+                        }}
+                        className="text-xs px-3 py-1.5 rounded-full bg-gold text-white hover:opacity-90 transition-opacity"
+                      >
+                        {t('restoreButton')}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setDeleteFor(entry);
+                          setDeleteError(null);
+                        }}
+                        className="text-xs px-3 py-1.5 rounded-full border border-warn-border text-warn hover:bg-warn-bg transition-colors"
+                      >
+                        {t('deleteButton')}
+                      </button>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </section>
@@ -431,6 +510,18 @@ export default function AdminRoomsScreen({
         error={restoreError}
         onConfirm={confirmRestore}
         onCancel={() => setRestoreFor(null)}
+      />
+
+      {/* Модалка: удалить из архива (навсегда, история проживания и заказов) */}
+      <ConfirmModal
+        open={!!deleteFor}
+        title={t('deleteModalTitle')}
+        description={t('deleteModalWarning')}
+        confirmLabel={t('deleteButton')}
+        loading={deleting}
+        error={deleteError}
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteFor(null)}
       />
     </div>
   );

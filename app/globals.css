@@ -118,3 +118,23 @@ body {
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+/* Небольшое "подпрыгивание" при появлении — используется для бейджа
+   "Выдано" в админке, чтобы отметка ощущалась чуть живее. Уже уважает
+   prefers-reduced-motion через общее правило выше. */
+@keyframes pop-in {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.animate-pop-in {
+  animation: pop-in 0.35s ease-out;
+}
