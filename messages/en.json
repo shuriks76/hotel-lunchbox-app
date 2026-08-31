@@ -95,7 +95,13 @@
     "errorGeneric": "Something went wrong, please try again.",
     "guestNoName": "No name",
     "roomNotFound": "No free room with that number — check and try again.",
-    "roomFull": "This room is already fully occupied."
+    "roomFull": "This room is already fully occupied.",
+    "navSettings": "Settings",
+    "deleteButton": "Delete",
+    "deleteModalTitle": "Permanently delete this guest from the archive?",
+    "deleteModalWarning": "This erases their stay and order history completely. Their login account stays intact — this doesn't prevent them from registering again. This can't be undone.",
+    "retentionNotice": "Entries older than {months} mo. are highlighted and moved to the top — worth a decision.",
+    "overdueLabel": "Overdue"
   },
   "adminOrders": {
     "weekdayMon": "Mon",
@@ -143,5 +149,17 @@
     "modalTitle": "Change this person's role?",
     "modalDescription": "{name} — this grants access to every guest's personal data. Takes effect immediately.",
     "candidatesEmpty": "No one has marked themselves as a candidate yet."
+  },
+  "adminSettings": {
+    "cutoffTitle": "Order cutoff time",
+    "cutoffHint": "Ordering for date D closes at this time on the day before D.",
+    "cutoffTimezoneNote": "Copenhagen time",
+    "retentionTitle": "Retention period for checked-out guests",
+    "retentionHint": "Archive entries older than this will be flagged as overdue for deletion.",
+    "monthsLabel": "months",
+    "saveButton": "Save",
+    "saving": "Saving…",
+    "savedMessage": "Saved.",
+    "errorGeneric": "Couldn't save, please try again."
   }
 }

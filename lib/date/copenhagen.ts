@@ -57,17 +57,29 @@ export function mondayOfWeekISO(dateISO: string): string {
 }
 
 /**
- * Дедлайн приёма заказов на дату D — 12:00 дня, предшествующего D,
- * по времени Копенгагена. Возвращает UTC-миллисекунды.
+ * Дедлайн приёма заказов на дату D — настраиваемое время (по умолчанию
+ * 12:00) дня, предшествующего D, по времени Копенгагена. Значения
+ * hour/minute приходят из таблицы settings (владелец может поменять
+ * их в админке) — если не переданы, используется 12:00 как разумное
+ * умолчание. Возвращает UTC-миллисекунды.
  */
-export function orderCutoffMs(dateISO: string): number {
+export function orderCutoffMs(
+  dateISO: string,
+  hour: number = 12,
+  minute: number = 0
+): number {
   const dayBefore = addDaysISO(dateISO, -1);
-  return zonedTimeToUtcMs(dayBefore, 12, 0, HOTEL_TZ);
+  return zonedTimeToUtcMs(dayBefore, hour, minute, HOTEL_TZ);
 }
 
 /** Открыт ли ещё приём заказов на dateISO (сравнение с текущим моментом). */
-export function isOrderOpen(dateISO: string, nowMs: number = Date.now()): boolean {
-  return nowMs < orderCutoffMs(dateISO);
+export function isOrderOpen(
+  dateISO: string,
+  hour: number = 12,
+  minute: number = 0,
+  nowMs: number = Date.now()
+): boolean {
+  return nowMs < orderCutoffMs(dateISO, hour, minute);
 }
 
 /** 14 дат: текущая и следующая календарная неделя, Пн-Вс, выровнено по неделям. */

@@ -95,7 +95,13 @@
     "errorGeneric": "Noget gik galt, prøv igen.",
     "guestNoName": "Intet navn",
     "roomNotFound": "Intet ledigt værelse med det nummer — tjek og prøv igen.",
-    "roomFull": "Dette værelse er allerede fuldt optaget."
+    "roomFull": "Dette værelse er allerede fuldt optaget.",
+    "navSettings": "Indstillinger",
+    "deleteButton": "Slet",
+    "deleteModalTitle": "Slet denne gæst permanent fra arkivet?",
+    "deleteModalWarning": "Dette sletter opholds- og bestillingshistorikken fuldstændigt. Login-kontoen forbliver intakt — dette forhindrer ikke fornyet registrering. Kan ikke fortrydes.",
+    "retentionNotice": "Poster ældre end {months} md. er fremhævet og flyttet øverst — kræver en beslutning.",
+    "overdueLabel": "Overskredet"
   },
   "adminOrders": {
     "weekdayMon": "Man",
@@ -143,5 +149,17 @@
     "modalTitle": "Skift denne persons rolle?",
     "modalDescription": "{name} — dette giver adgang til alle gæsters personlige data. Træder i kraft med det samme.",
     "candidatesEmpty": "Ingen har endnu markeret sig som kandidat."
+  },
+  "adminSettings": {
+    "cutoffTitle": "Deadline for bestilling",
+    "cutoffHint": "Bestilling til dato D lukker på dette tidspunkt dagen før D.",
+    "cutoffTimezoneNote": "København-tid",
+    "retentionTitle": "Opbevaringsperiode for udtjekkede gæster",
+    "retentionHint": "Arkivposter ældre end dette markeres som forfaldne til sletning.",
+    "monthsLabel": "måneder",
+    "saveButton": "Gem",
+    "saving": "Gemmer…",
+    "savedMessage": "Gemt.",
+    "errorGeneric": "Kunne ikke gemme, prøv igen."
   }
 }
