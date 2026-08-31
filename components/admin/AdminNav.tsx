@@ -16,6 +16,7 @@ export default function AdminNav({ isOwner }: { isOwner: boolean }) {
     { href: '/admin/orders', label: t('navOrders') },
     { href: '/admin/rooms', label: t('navRooms') },
     ...(isOwner ? [{ href: '/admin/admins', label: t('navAdmins') }] : []),
+    ...(isOwner ? [{ href: '/admin/settings', label: t('navSettings') }] : []),
   ];
 
   async function handleSignOut() {
