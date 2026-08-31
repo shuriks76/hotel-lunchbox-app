@@ -25,6 +25,8 @@ type Props = {
   todayISO: string;
   initialOrders: OrderItem[];
   totalResidents: number;
+  cutoffHour: number;
+  cutoffMinute: number;
 };
 
 export default function AdminOrdersScreen({
@@ -32,6 +34,8 @@ export default function AdminOrdersScreen({
   todayISO,
   initialOrders,
   totalResidents,
+  cutoffHour,
+  cutoffMinute,
 }: Props) {
   const t = useTranslations('adminOrders');
   const tAdmin = useTranslations('admin');
@@ -229,7 +233,7 @@ export default function AdminOrdersScreen({
             const total = totalsByDate.get(date) ?? 0;
             const isSelected = date === selectedDate;
             const isToday = date === todayISO;
-            const open = isOrderOpen(date);
+            const open = isOrderOpen(date, cutoffHour, cutoffMinute);
 
             let cellClasses =
               'rounded-lg border px-1 py-2 flex flex-col items-center gap-1 transition-colors ';
@@ -313,7 +317,7 @@ export default function AdminOrdersScreen({
               key={roomNumber}
               className="rounded-2xl bg-surface border border-border p-4 space-y-2"
             >
-              <p className="font-display text-2xl font-semibold text-ink">
+              <p className="font-display text-base font-semibold text-ink">
                 № {roomNumber}
               </p>
               <ul className="space-y-2">
@@ -337,7 +341,7 @@ export default function AdminOrdersScreen({
                       </div>
 
                       {item.issuedAt ? (
-                        <span className="text-xs px-3 py-1.5 rounded-full bg-open-bg text-open font-medium">
+                        <span className="animate-pop-in text-xs px-3 py-1.5 rounded-full bg-open-bg text-open font-medium">
                           {t('issuedBadge')}
                         </span>
                       ) : (

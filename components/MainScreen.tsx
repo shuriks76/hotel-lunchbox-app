@@ -26,6 +26,8 @@ type Props = {
   dates: string[];
   initialOrders: OrderRow[];
   todayISO: string;
+  cutoffHour: number;
+  cutoffMinute: number;
 };
 
 export default function MainScreen({
@@ -37,6 +39,8 @@ export default function MainScreen({
   dates,
   initialOrders,
   todayISO,
+  cutoffHour,
+  cutoffMinute,
 }: Props) {
   const t = useTranslations('main');
   const locale = useLocale();
@@ -45,7 +49,7 @@ export default function MainScreen({
 
   const [orders, setOrders] = useState<OrderRow[]>(initialOrders);
   const [selectedDate, setSelectedDate] = useState<string>(() => {
-    const firstOpen = dates.find((d) => isOrderOpen(d));
+    const firstOpen = dates.find((d) => isOrderOpen(d, cutoffHour, cutoffMinute));
     return firstOpen ?? dates[0];
   });
   const [pendingMeal, setPendingMeal] = useState<MealType | null>(null);
@@ -72,10 +76,10 @@ export default function MainScreen({
     return MEAL_TYPES.reduce((sum, m) => sum + countFor(date, m), 0);
   }
 
-  const selectedIsOpen = isOrderOpen(selectedDate);
+  const selectedIsOpen = isOrderOpen(selectedDate, cutoffHour, cutoffMinute);
 
   const deadlineTimeLabel = useMemo(() => {
-    const cutoff = orderCutoffMs(selectedDate);
+    const cutoff = orderCutoffMs(selectedDate, cutoffHour, cutoffMinute);
     return new Intl.DateTimeFormat(locale, {
       timeZone: 'Europe/Copenhagen',
       day: 'numeric',
@@ -83,7 +87,7 @@ export default function MainScreen({
       hour: '2-digit',
       minute: '2-digit',
     }).format(new Date(cutoff));
-  }, [selectedDate, locale]);
+  }, [selectedDate, locale, cutoffHour, cutoffMinute]);
 
   async function refetchOrdersForDate(date: string) {
     const { data, error } = await supabase
@@ -233,7 +237,7 @@ export default function MainScreen({
 
             {dates.map((date) => {
               const dayNum = Number(date.slice(8, 10));
-              const open = isOrderOpen(date);
+              const open = isOrderOpen(date, cutoffHour, cutoffMinute);
               const total = totalFor(date);
               const isSelected = date === selectedDate;
               const isToday = date === todayISO;

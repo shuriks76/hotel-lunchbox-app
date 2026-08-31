@@ -32,7 +32,7 @@ export default async function AdminOrdersPage() {
   const todayISO = copenhagenTodayISO();
   const dates = getTwoWeekRange(todayISO);
 
-  const [{ data, error }, { count: totalResidents }] = await Promise.all([
+  const [{ data, error }, { count: totalResidents }, { data: settings }] = await Promise.all([
     supabase
       .from('orders')
       .select(
@@ -43,6 +43,7 @@ export default async function AdminOrdersPage() {
       .is('cancelled_at', null)
       .order('order_date'),
     supabase.from('stays').select('id', { count: 'exact', head: true }).eq('active', true),
+    supabase.from('settings').select('order_cutoff_hour, order_cutoff_minute').eq('id', 1).single(),
   ]);
 
   if (error) {
@@ -77,6 +78,8 @@ export default async function AdminOrdersPage() {
         todayISO={todayISO}
         initialOrders={orders}
         totalResidents={totalResidents ?? 0}
+        cutoffHour={settings?.order_cutoff_hour ?? 12}
+        cutoffMinute={settings?.order_cutoff_minute ?? 0}
       />
     </>
   );

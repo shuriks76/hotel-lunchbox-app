@@ -59,12 +59,19 @@ export default async function RootPage({
   const todayISO = copenhagenTodayISO();
   const dates = getTwoWeekRange(todayISO);
 
-  const { data: orderRows } = await supabase
-    .from('orders')
-    .select('order_date, meal_type, stay_id, issued_at')
-    .gte('order_date', dates[0])
-    .lte('order_date', dates[dates.length - 1])
-    .is('cancelled_at', null);
+  const [{ data: orderRows }, { data: settings }] = await Promise.all([
+    supabase
+      .from('orders')
+      .select('order_date, meal_type, stay_id, issued_at')
+      .gte('order_date', dates[0])
+      .lte('order_date', dates[dates.length - 1])
+      .is('cancelled_at', null),
+    supabase
+      .from('settings')
+      .select('order_cutoff_hour, order_cutoff_minute')
+      .eq('id', 1)
+      .single(),
+  ]);
 
   return (
     <MainScreen
@@ -76,6 +83,8 @@ export default async function RootPage({
       dates={dates}
       initialOrders={orderRows ?? []}
       todayISO={todayISO}
+      cutoffHour={settings?.order_cutoff_hour ?? 12}
+      cutoffMinute={settings?.order_cutoff_minute ?? 0}
     />
   );
 }
