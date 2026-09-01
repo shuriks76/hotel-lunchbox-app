@@ -89,7 +89,7 @@
     "checkoutModalTitle": "Check out this guest?",
     "checkoutModalWarning": "This guest's future orders will be automatically archived (not deleted). They can be restored from the archive later.",
     "restoreModalTitle": "Restore this guest?",
-    "restoreModalDescription": "The guest will return to their previous room, and their cancelled orders for dates still open will be restored.",
+    "restoreModalDescription": "The guest will reappear in the \"Unassigned guests\" list and will need to be checked in again, the normal way. Their previous room and order history are not restored.",
     "confirm": "Confirm",
     "cancel": "Cancel",
     "errorGeneric": "Something went wrong, please try again.",

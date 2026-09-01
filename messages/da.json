@@ -89,7 +89,7 @@
     "checkoutModalTitle": "Tjek denne gæst ud?",
     "checkoutModalWarning": "Gæstens fremtidige bestillinger arkiveres automatisk (slettes ikke). De kan gendannes fra arkivet senere.",
     "restoreModalTitle": "Gendan denne gæst?",
-    "restoreModalDescription": "Gæsten vender tilbage til sit tidligere værelse, og annullerede bestillinger for datoer, der stadig er åbne, gendannes.",
+    "restoreModalDescription": "Gæsten vises igen på listen \"Ikke-tildelte gæster\" og skal tjekkes ind igen på normal vis. Deres tidligere værelse og bestillingshistorik gendannes ikke.",
     "confirm": "Bekræft",
     "cancel": "Annuller",
     "errorGeneric": "Noget gik galt, prøv igen.",

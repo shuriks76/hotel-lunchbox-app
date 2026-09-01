@@ -31,6 +31,7 @@ type ActiveStayRow = {
 type ProfileRow = {
   id: string;
   full_name: string;
+  needs_room_assignment: boolean;
 };
 
 type ArchivedStayRow = {
@@ -64,7 +65,7 @@ export default async function AdminRoomsPage() {
       .from('stays')
       .select('id, room_id, user_id, checked_in_at, profiles!user_id(full_name)')
       .eq('active', true),
-    supabase.from('profiles').select('id, full_name').eq('role', 'guest'),
+    supabase.from('profiles').select('id, full_name, needs_room_assignment').eq('role', 'guest'),
     supabase
       .from('stays')
       .select('id, user_id, checked_out_at, profiles!user_id(full_name), rooms(room_number)')
@@ -101,7 +102,9 @@ export default async function AdminRoomsPage() {
   const typedArchived = (archived ?? []) as ArchivedStayRow[];
 
   const activeUserIds = new Set(typedActiveStays.map((s) => s.user_id));
-  const unassigned = typedGuestProfiles.filter((p) => !activeUserIds.has(p.id));
+  const unassigned = typedGuestProfiles.filter(
+    (p) => p.needs_room_assignment && !activeUserIds.has(p.id)
+  );
 
   return (
     <>
