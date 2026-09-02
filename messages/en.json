@@ -122,7 +122,9 @@
     "issueModalDescription": "{meal}, room № {room}. This can't be undone in the interface.",
     "printButton": "Print",
     "downloadPdfButton": "Download PDF",
-    "generatingPdf": "Preparing PDF…"
+    "generatingPdf": "Preparing PDF…",
+    "roomFilterPlaceholder": "Filter by room number",
+    "roomFilterEmpty": "No room with that number for this date."
   },
   "profile": {
     "title": "Profile",

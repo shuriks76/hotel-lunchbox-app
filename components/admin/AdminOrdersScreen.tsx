@@ -108,6 +108,18 @@ export default function AdminOrdersScreen({
     return Array.from(map.entries()).sort((a, b) => a[0].localeCompare(b[0], 'ru'));
   }, [ordersForDate]);
 
+  // Фильтр по номеру комнаты — только для отображения на экране.
+  // Печать и PDF всегда показывают все комнаты за выбранную дату
+  // целиком, независимо от того, что сейчас введено в поиске.
+  const [roomFilter, setRoomFilter] = useState('');
+  const visibleGroupedByRoom = useMemo(() => {
+    const needle = roomFilter.trim().toLowerCase();
+    if (!needle) return groupedByRoom;
+    return groupedByRoom.filter(([roomNumber]) =>
+      roomNumber.toLowerCase().includes(needle)
+    );
+  }, [groupedByRoom, roomFilter]);
+
   const mealLabels: Record<MealType, string> = {
     breakfast: t('mealBreakfast'),
     lunch: t('mealLunch'),
@@ -305,19 +317,36 @@ export default function AdminOrdersScreen({
         ))}
       </div>
 
+      {/* Фильтр по номеру комнаты — на экране, не влияет на печать/PDF */}
+      {groupedByRoom.length > 0 && (
+        <div className="rounded-2xl bg-surface border border-border p-4">
+          <input
+            type="text"
+            value={roomFilter}
+            onChange={(e) => setRoomFilter(e.target.value)}
+            placeholder={t('roomFilterPlaceholder')}
+            className="w-full rounded-lg border border-border bg-surface-raised px-3 py-2 text-sm text-ink"
+          />
+        </div>
+      )}
+
       {/* Список по комнатам */}
       {groupedByRoom.length === 0 ? (
         <div className="rounded-2xl bg-surface border border-border p-6 text-center">
           <p className="text-ink-muted text-sm">{t('emptyForDate')}</p>
         </div>
+      ) : visibleGroupedByRoom.length === 0 ? (
+        <div className="rounded-2xl bg-surface border border-border p-6 text-center">
+          <p className="text-ink-muted text-sm">{t('roomFilterEmpty')}</p>
+        </div>
       ) : (
         <div className="space-y-3">
-          {groupedByRoom.map(([roomNumber, items]) => (
+          {visibleGroupedByRoom.map(([roomNumber, items]) => (
             <div
               key={roomNumber}
               className="rounded-2xl bg-surface border border-border p-4 space-y-2"
             >
-              <p className="font-display text-base font-semibold text-ink">
+              <p className="font-display text-2xl font-semibold text-ink">
                 № {roomNumber}
               </p>
               <ul className="space-y-2">

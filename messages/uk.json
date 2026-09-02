@@ -122,7 +122,9 @@
     "issueModalDescription": "{meal}, кімната № {room}. Це неможливо скасувати в інтерфейсі.",
     "printButton": "Друк",
     "downloadPdfButton": "Завантажити PDF",
-    "generatingPdf": "Готуємо PDF…"
+    "generatingPdf": "Готуємо PDF…",
+    "roomFilterPlaceholder": "Фільтр за номером кімнати",
+    "roomFilterEmpty": "Кімнату з таким номером не знайдено на цю дату."
   },
   "profile": {
     "title": "Профіль",

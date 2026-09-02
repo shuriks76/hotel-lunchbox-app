@@ -122,7 +122,9 @@
     "issueModalDescription": "{meal}, værelse nr. {room}. Kan ikke fortrydes i grænsefladen.",
     "printButton": "Print",
     "downloadPdfButton": "Download PDF",
-    "generatingPdf": "Forbereder PDF…"
+    "generatingPdf": "Forbereder PDF…",
+    "roomFilterPlaceholder": "Filtrer efter værelsesnummer",
+    "roomFilterEmpty": "Intet værelse med det nummer på denne dato."
   },
   "profile": {
     "title": "Profil",

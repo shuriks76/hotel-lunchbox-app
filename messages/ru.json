@@ -122,7 +122,9 @@
     "issueModalDescription": "{meal}, комната № {room}. Это действие нельзя отменить в интерфейсе.",
     "printButton": "Печать",
     "downloadPdfButton": "Скачать PDF",
-    "generatingPdf": "Готовим PDF…"
+    "generatingPdf": "Готовим PDF…",
+    "roomFilterPlaceholder": "Фильтр по номеру комнаты",
+    "roomFilterEmpty": "Комната с таким номером не найдена на эту дату."
   },
   "profile": {
     "title": "Профиль",
