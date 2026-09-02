@@ -70,6 +70,7 @@ export default async function AdminRoomsPage() {
       .from('stays')
       .select('id, user_id, checked_out_at, profiles!user_id(full_name), rooms(room_number)')
       .eq('active', false)
+      .is('superseded_by_stay_id', null)
       .order('checked_out_at', { ascending: false })
       .limit(50),
     supabase

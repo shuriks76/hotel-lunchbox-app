@@ -5,6 +5,7 @@ import { setRequestLocale, getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import ThemeSync from '@/components/ThemeSync';
+import VisibilityRefresh from '@/components/VisibilityRefresh';
 import '../globals.css';
 
 const displayFont = Cormorant_Garamond({
@@ -80,6 +81,7 @@ export default async function LocaleLayout({
       </head>
       <body className="font-sans antialiased min-h-screen">
         <ThemeSync />
+        <VisibilityRefresh />
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>

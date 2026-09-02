@@ -27,8 +27,8 @@ export default function AdminNav({ isOwner }: { isOwner: boolean }) {
 
   return (
     <nav className="bg-surface border-b border-border print:hidden">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14">
-        <div className="flex items-center gap-1">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <div className="flex items-center gap-1 overflow-x-auto whitespace-nowrap -mx-1 px-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {tabs.map((tab) => {
             const active = pathname === tab.href;
             return (
@@ -36,7 +36,7 @@ export default function AdminNav({ isOwner }: { isOwner: boolean }) {
                 key={tab.href}
                 href={tab.href}
                 className={
-                  'px-3 py-2 rounded-lg text-sm font-medium transition-colors ' +
+                  'shrink-0 px-3 py-2 rounded-lg text-sm font-medium transition-colors ' +
                   (active
                     ? 'bg-gold-bg text-gold'
                     : 'text-ink-muted hover:text-ink hover:bg-surface-raised')
@@ -47,7 +47,7 @@ export default function AdminNav({ isOwner }: { isOwner: boolean }) {
             );
           })}
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap justify-end">
           <CompactLanguageSwitcher />
           <button
             type="button"
