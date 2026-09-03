@@ -168,7 +168,7 @@ export default function AdminOrdersScreen({
       .map(([floor, rows]) => ({ floor, rows }));
   }, [ordersForDate, tAdmin]);
 
-
+  const mealLabels: Record<MealType, string> = {
     breakfast: t('mealBreakfast'),
     lunch: t('mealLunch'),
     dinner: t('mealDinner'),
