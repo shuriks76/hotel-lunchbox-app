@@ -120,7 +120,55 @@ export default function AdminOrdersScreen({
     );
   }, [groupedByRoom, roomFilter]);
 
-  const mealLabels: Record<MealType, string> = {
+  // Таблицы по этажам — для печати и PDF. Этаж = первая цифра номера
+  // комнаты (комнаты 201-225 -> этаж 2, и т.д.), так и подтвердили —
+  // отдельного поля "этаж" в базе нет и не нужно.
+  const floorTables = useMemo(() => {
+    type RoomRow = {
+      roomNumber: string;
+      namesLabel: string;
+      counts: Record<MealType, number>;
+    };
+
+    const byRoom = new Map<string, OrderItem[]>();
+    for (const o of ordersForDate) {
+      const list = byRoom.get(o.roomNumber) ?? [];
+      list.push(o);
+      byRoom.set(o.roomNumber, list);
+    }
+
+    const rows: RoomRow[] = Array.from(byRoom.entries()).map(
+      ([roomNumber, items]) => {
+        const names = Array.from(
+          new Set(items.map((i) => i.guestName || tAdmin('guestNoName')))
+        );
+        const counts: Record<MealType, number> = {
+          breakfast: 0,
+          lunch: 0,
+          dinner: 0,
+        };
+        for (const i of items) counts[i.mealType]++;
+        return { roomNumber, namesLabel: names.join(', '), counts };
+      }
+    );
+
+    const byFloor = new Map<string, RoomRow[]>();
+    for (const row of rows) {
+      const floor = row.roomNumber.trim().charAt(0) || '?';
+      const list = byFloor.get(floor) ?? [];
+      list.push(row);
+      byFloor.set(floor, list);
+    }
+    for (const list of byFloor.values()) {
+      list.sort((a, b) => a.roomNumber.localeCompare(b.roomNumber, 'ru', { numeric: true }));
+    }
+
+    return Array.from(byFloor.entries())
+      .sort((a, b) => a[0].localeCompare(b[0], 'ru', { numeric: true }))
+      .map(([floor, rows]) => ({ floor, rows }));
+  }, [ordersForDate, tAdmin]);
+
+
     breakfast: t('mealBreakfast'),
     lunch: t('mealLunch'),
     dinner: t('mealDinner'),
@@ -168,16 +216,12 @@ export default function AdminOrdersScreen({
         import('./OrdersPdfDocument'),
       ]);
 
-      const logoUrl = `${window.location.origin}/logo/profil-hotels-logo-white-bg.png`;
-
       const blob = await pdf(
         <OrdersPdfDocument
-          logoUrl={logoUrl}
           dateLabel={selectedDateLabel}
           mealLabels={mealLabels}
-          noNameLabel={tAdmin('guestNoName')}
-          issuedLabel={t('issuedBadge')}
-          groupedByRoom={groupedByRoom}
+          floorLabel={t('floorLabel')}
+          floorTables={floorTables}
         />
       ).toBlob();
 
@@ -200,34 +244,58 @@ export default function AdminOrdersScreen({
           "Сохранить как PDF" из диалога печати браузера), на экране
           скрыта. Отдельно от неё есть кнопка "Скачать PDF" ниже —
           та генерирует файл через react-pdf/renderer, без диалога
-          печати браузера. */}
-      <div className="hidden print:block p-8">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/logo/profil-hotels-logo-white-bg.png"
-          alt=""
-          className="h-16 w-auto mb-4"
-        />
-        <h1 className="text-xl font-bold mb-6 capitalize">
+          печати браузера. Таблицы по этажам, по 3 в ширину — для
+          экономии бумаги. Без логотипов, простой заголовок. */}
+      <div className="hidden print:block p-6">
+        <h1 className="text-lg font-bold mb-4 capitalize">
           {selectedDateLabel}
         </h1>
-        {groupedByRoom.map(([roomNumber, items]) => (
-          <div key={roomNumber} className="mb-4 break-inside-avoid">
-            <p className="font-bold border-b border-black pb-1 mb-1">
-              № {roomNumber}
-            </p>
-            {items
-              .sort((a, b) => MEAL_TYPES.indexOf(a.mealType) - MEAL_TYPES.indexOf(b.mealType))
-              .map((item) => (
-                <div key={item.id} className="flex justify-between text-sm py-0.5">
-                  <span>
-                    {mealLabels[item.mealType]} — {item.guestName || tAdmin('guestNoName')}
-                  </span>
-                  {item.issuedAt && <span>✓ {t('issuedBadge')}</span>}
-                </div>
-              ))}
-          </div>
-        ))}
+        <div className="grid grid-cols-3 gap-3">
+          {floorTables.map(({ floor, rows }) => (
+            <table
+              key={floor}
+              className="w-full text-[9px] border-collapse break-inside-avoid"
+            >
+              <thead>
+                <tr>
+                  <th
+                    colSpan={4}
+                    className="text-left font-bold border-b-2 border-black pb-1 text-[10px]"
+                  >
+                    {t('floorLabel')} {floor}
+                  </th>
+                </tr>
+                <tr className="border-b border-black">
+                  <th className="text-left py-0.5 pr-1">№</th>
+                  <th className="text-center py-0.5 px-0.5">🌅</th>
+                  <th className="text-center py-0.5 px-0.5">☀️</th>
+                  <th className="text-center py-0.5 px-0.5">🌙</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row) => (
+                  <tr key={row.roomNumber} className="border-b border-gray-300">
+                    <td className="py-0.5 pr-1 align-top">
+                      <div className="font-semibold">{row.roomNumber}</div>
+                      <div className="text-[8px] text-gray-600 leading-tight">
+                        {row.namesLabel}
+                      </div>
+                    </td>
+                    <td className="text-center py-0.5 px-0.5 align-top">
+                      {row.counts.breakfast || ''}
+                    </td>
+                    <td className="text-center py-0.5 px-0.5 align-top">
+                      {row.counts.lunch || ''}
+                    </td>
+                    <td className="text-center py-0.5 px-0.5 align-top">
+                      {row.counts.dinner || ''}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ))}
+        </div>
       </div>
 
       <div className="space-y-4 print:hidden">

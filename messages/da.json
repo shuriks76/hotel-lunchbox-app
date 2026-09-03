@@ -124,7 +124,8 @@
     "downloadPdfButton": "Download PDF",
     "generatingPdf": "Forbereder PDF…",
     "roomFilterPlaceholder": "Filtrer efter værelsesnummer",
-    "roomFilterEmpty": "Intet værelse med det nummer på denne dato."
+    "roomFilterEmpty": "Intet værelse med det nummer på denne dato.",
+    "floorLabel": "Etage"
   },
   "profile": {
     "title": "Profil",

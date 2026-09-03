@@ -1,111 +1,144 @@
-import {
-  Document,
-  Page,
-  Text,
-  View,
-  Image,
-  StyleSheet,
-} from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
+
+// Шрифт по умолчанию в react-pdf (Helvetica) не поддерживает кириллицу —
+// подключаем DejaVu Sans (полная поддержка кириллицы), файлы лежат в
+// public/fonts и раздаются с того же домена, что и само приложение.
+Font.register({
+  family: 'DejaVuSans',
+  fonts: [
+    { src: '/fonts/DejaVuSans.ttf', fontWeight: 'normal' },
+    { src: '/fonts/DejaVuSans-Bold.ttf', fontWeight: 'bold' },
+  ],
+});
 
 type MealType = 'breakfast' | 'lunch' | 'dinner';
 
-type OrderItem = {
-  id: string;
-  mealType: MealType;
-  issuedAt: string | null;
+type RoomRow = {
   roomNumber: string;
-  guestName: string | null;
+  namesLabel: string;
+  counts: Record<MealType, number>;
+};
+
+type FloorTable = {
+  floor: string;
+  rows: RoomRow[];
 };
 
 type Props = {
-  logoUrl: string;
   dateLabel: string;
   mealLabels: Record<MealType, string>;
-  noNameLabel: string;
-  issuedLabel: string;
-  groupedByRoom: [string, OrderItem[]][];
+  floorLabel: string;
+  floorTables: FloorTable[];
 };
 
 const styles = StyleSheet.create({
   page: {
-    padding: 32,
-    fontSize: 10,
-    fontFamily: 'Helvetica',
+    padding: 24,
+    fontSize: 8,
+    fontFamily: 'DejaVuSans',
     color: '#262626',
   },
-  logo: {
-    width: 90,
-    marginBottom: 12,
-  },
   title: {
-    fontSize: 16,
-    fontFamily: 'Helvetica-Bold',
-    marginBottom: 16,
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginBottom: 12,
     textTransform: 'capitalize',
   },
-  room: {
-    marginBottom: 12,
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
   },
-  roomTitle: {
-    fontSize: 12,
-    fontFamily: 'Helvetica-Bold',
-    marginBottom: 4,
-    borderBottom: '1 solid #E7E7E3',
+  table: {
+    width: '32%',
+  },
+  floorHeader: {
+    fontSize: 9,
+    fontWeight: 'bold',
+    borderBottom: '1.5 solid #262626',
+    paddingBottom: 3,
+    marginBottom: 2,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    borderBottom: '1 solid #262626',
     paddingBottom: 2,
+    marginBottom: 1,
   },
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    borderBottom: '0.5 solid #CCCCCC',
     paddingVertical: 2,
   },
-  rowLeft: {
-    flexDirection: 'row',
-    gap: 6,
+  roomCell: {
+    width: '52%',
+    paddingRight: 3,
   },
-  guest: {
+  roomNumber: {
+    fontWeight: 'bold',
+    fontSize: 8,
+  },
+  roomNames: {
+    fontSize: 6.5,
     color: '#606058',
   },
-  issued: {
-    color: '#16a34a',
-    fontFamily: 'Helvetica-Bold',
+  mealCell: {
+    width: '16%',
+    textAlign: 'center',
+  },
+  headerCell: {
+    fontSize: 7,
+    textAlign: 'center',
+  },
+  headerCellRoom: {
+    fontSize: 7,
+    width: '52%',
   },
 });
 
-// Отдельный react-pdf компонент документа — рендерится в PDF-blob
-// прямо в браузере (без puppeteer/серверных headless-браузеров, это
-// проще поддерживать на Vercel, как и предполагалось в ТЗ).
+// Табличный формат по этажам (по 3 таблицы в ряд), без логотипов —
+// для экономии бумаги при печати на кухне.
 export default function OrdersPdfDocument({
-  logoUrl,
   dateLabel,
   mealLabels,
-  noNameLabel,
-  issuedLabel,
-  groupedByRoom,
+  floorLabel,
+  floorTables,
 }: Props) {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <Image src={logoUrl} style={styles.logo} />
         <Text style={styles.title}>{dateLabel}</Text>
 
-        {groupedByRoom.map(([roomNumber, items]) => (
-          <View key={roomNumber} style={styles.room} wrap={false}>
-            <Text style={styles.roomTitle}>№ {roomNumber}</Text>
-            {items.map((item) => (
-              <View key={item.id} style={styles.row}>
-                <View style={styles.rowLeft}>
-                  <Text>{mealLabels[item.mealType]}</Text>
-                  <Text style={styles.guest}>
-                    {item.guestName || noNameLabel}
+        <View style={styles.grid}>
+          {floorTables.map(({ floor, rows }) => (
+            <View key={floor} style={styles.table} wrap={false}>
+              <Text style={styles.floorHeader}>
+                {floorLabel} {floor}
+              </Text>
+              <View style={styles.headerRow}>
+                <Text style={styles.headerCellRoom}>№</Text>
+                <Text style={styles.headerCell}>{mealLabels.breakfast[0]}</Text>
+                <Text style={styles.headerCell}>{mealLabels.lunch[0]}</Text>
+                <Text style={styles.headerCell}>{mealLabels.dinner[0]}</Text>
+              </View>
+              {rows.map((row) => (
+                <View key={row.roomNumber} style={styles.row}>
+                  <View style={styles.roomCell}>
+                    <Text style={styles.roomNumber}>{row.roomNumber}</Text>
+                    <Text style={styles.roomNames}>{row.namesLabel}</Text>
+                  </View>
+                  <Text style={styles.mealCell}>
+                    {row.counts.breakfast || ''}
+                  </Text>
+                  <Text style={styles.mealCell}>{row.counts.lunch || ''}</Text>
+                  <Text style={styles.mealCell}>
+                    {row.counts.dinner || ''}
                   </Text>
                 </View>
-                {item.issuedAt && (
-                  <Text style={styles.issued}>✓ {issuedLabel}</Text>
-                )}
-              </View>
-            ))}
-          </View>
-        ))}
+              ))}
+            </View>
+          ))}
+        </View>
       </Page>
     </Document>
   );

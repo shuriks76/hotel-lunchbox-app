@@ -124,7 +124,8 @@
     "downloadPdfButton": "Download PDF",
     "generatingPdf": "Preparing PDF…",
     "roomFilterPlaceholder": "Filter by room number",
-    "roomFilterEmpty": "No room with that number for this date."
+    "roomFilterEmpty": "No room with that number for this date.",
+    "floorLabel": "Floor"
   },
   "profile": {
     "title": "Profile",

@@ -124,7 +124,8 @@
     "downloadPdfButton": "Скачать PDF",
     "generatingPdf": "Готовим PDF…",
     "roomFilterPlaceholder": "Фильтр по номеру комнаты",
-    "roomFilterEmpty": "Комната с таким номером не найдена на эту дату."
+    "roomFilterEmpty": "Комната с таким номером не найдена на эту дату.",
+    "floorLabel": "Этаж"
   },
   "profile": {
     "title": "Профиль",

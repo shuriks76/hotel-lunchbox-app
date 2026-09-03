@@ -124,7 +124,8 @@
     "downloadPdfButton": "Завантажити PDF",
     "generatingPdf": "Готуємо PDF…",
     "roomFilterPlaceholder": "Фільтр за номером кімнати",
-    "roomFilterEmpty": "Кімнату з таким номером не знайдено на цю дату."
+    "roomFilterEmpty": "Кімнату з таким номером не знайдено на цю дату.",
+    "floorLabel": "Поверх"
   },
   "profile": {
     "title": "Профіль",
