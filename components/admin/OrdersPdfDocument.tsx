@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
   headerCell: {
     fontSize: 7,
     textAlign: 'center',
+    width: '16%',
   },
   headerCellRoom: {
     fontSize: 7,
