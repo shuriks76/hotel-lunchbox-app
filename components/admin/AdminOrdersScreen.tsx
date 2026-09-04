@@ -168,6 +168,28 @@ export default function AdminOrdersScreen({
       .map(([floor, rows]) => ({ floor, rows }));
   }, [ordersForDate, tAdmin]);
 
+  // Распределяем этажи по 2 колонкам для печати/PDF — не строго один
+  // этаж на колонку, а сбалансированно по числу строк, чтобы обе
+  // колонки получались примерно одинаковой высоты. Этажи внутри
+  // колонки идут подряд, каждый как отдельный блок-разделитель.
+  const printColumns = useMemo(() => {
+    const columnCount = 2;
+    const totalRows = floorTables.reduce((sum, f) => sum + f.rows.length, 0);
+    const target = totalRows / columnCount;
+    const columns: typeof floorTables[] = Array.from({ length: columnCount }, () => []);
+    let colIndex = 0;
+    let accInCol = 0;
+    for (const ft of floorTables) {
+      columns[colIndex].push(ft);
+      accInCol += ft.rows.length;
+      if (accInCol >= target && colIndex < columnCount - 1) {
+        colIndex++;
+        accInCol = 0;
+      }
+    }
+    return columns;
+  }, [floorTables]);
+
   const mealLabels: Record<MealType, string> = {
     breakfast: t('mealBreakfast'),
     lunch: t('mealLunch'),
@@ -221,7 +243,7 @@ export default function AdminOrdersScreen({
           dateLabel={selectedDateLabel}
           mealLabels={mealLabels}
           floorLabel={t('floorLabel')}
-          floorTables={floorTables}
+          printColumns={printColumns}
         />
       ).toBlob();
 
@@ -250,50 +272,54 @@ export default function AdminOrdersScreen({
         <h1 className="text-lg font-bold mb-4 capitalize">
           {selectedDateLabel}
         </h1>
-        <div className="grid grid-cols-3 gap-3">
-          {floorTables.map(({ floor, rows }) => (
-            <table
-              key={floor}
-              className="w-full text-[9px] border-collapse break-inside-avoid"
-            >
-              <thead>
-                <tr>
-                  <th
-                    colSpan={4}
-                    className="text-left font-bold border-b-2 border-black pb-1 text-[10px]"
-                  >
-                    {t('floorLabel')} {floor}
-                  </th>
-                </tr>
-                <tr className="border-b border-black">
-                  <th className="text-left py-0.5 pr-1">№</th>
-                  <th className="text-center py-0.5 px-0.5">🌅</th>
-                  <th className="text-center py-0.5 px-0.5">☀️</th>
-                  <th className="text-center py-0.5 px-0.5">🌙</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((row) => (
-                  <tr key={row.roomNumber} className="border-b border-gray-300">
-                    <td className="py-0.5 pr-1 align-top">
-                      <div className="font-semibold">{row.roomNumber}</div>
-                      <div className="text-[8px] text-gray-600 leading-tight">
-                        {row.namesLabel}
-                      </div>
-                    </td>
-                    <td className="text-center py-0.5 px-0.5 align-top">
-                      {row.counts.breakfast || ''}
-                    </td>
-                    <td className="text-center py-0.5 px-0.5 align-top">
-                      {row.counts.lunch || ''}
-                    </td>
-                    <td className="text-center py-0.5 px-0.5 align-top">
-                      {row.counts.dinner || ''}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <div className="grid grid-cols-2 gap-6">
+          {printColumns.map((column, colIdx) => (
+            <div key={colIdx} className="space-y-3">
+              {column.map(({ floor, rows }) => (
+                <table
+                  key={floor}
+                  className="w-full text-[9px] border-collapse break-inside-avoid"
+                >
+                  <thead>
+                    <tr>
+                      <th
+                        colSpan={4}
+                        className="text-left font-bold border-b-2 border-black pb-1 text-[10px]"
+                      >
+                        {t('floorLabel')} {floor}
+                      </th>
+                    </tr>
+                    <tr className="border-b border-black">
+                      <th className="text-left py-0.5 pr-1">№</th>
+                      <th className="text-center py-0.5 px-0.5">🌅</th>
+                      <th className="text-center py-0.5 px-0.5">☀️</th>
+                      <th className="text-center py-0.5 px-0.5">🌙</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rows.map((row) => (
+                      <tr key={row.roomNumber} className="border-b border-gray-300">
+                        <td className="py-0.5 pr-1 align-top">
+                          <div className="font-semibold">{row.roomNumber}</div>
+                          <div className="text-[8px] text-gray-600 leading-tight">
+                            {row.namesLabel}
+                          </div>
+                        </td>
+                        <td className="text-center py-0.5 px-0.5 align-top">
+                          {row.counts.breakfast}
+                        </td>
+                        <td className="text-center py-0.5 px-0.5 align-top">
+                          {row.counts.lunch}
+                        </td>
+                        <td className="text-center py-0.5 px-0.5 align-top">
+                          {row.counts.dinner}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ))}
+            </div>
           ))}
         </div>
       </div>

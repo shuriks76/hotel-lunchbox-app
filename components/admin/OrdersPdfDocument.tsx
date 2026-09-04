@@ -28,7 +28,7 @@ type Props = {
   dateLabel: string;
   mealLabels: Record<MealType, string>;
   floorLabel: string;
-  floorTables: FloorTable[];
+  printColumns: FloorTable[][];
 };
 
 const styles = StyleSheet.create({
@@ -46,11 +46,13 @@ const styles = StyleSheet.create({
   },
   grid: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 10,
+    gap: 16,
+  },
+  column: {
+    width: '48%',
   },
   table: {
-    width: '32%',
+    marginBottom: 10,
   },
   floorHeader: {
     fontSize: 9,
@@ -96,13 +98,14 @@ const styles = StyleSheet.create({
   },
 });
 
-// Табличный формат по этажам (по 3 таблицы в ряд), без логотипов —
-// для экономии бумаги при печати на кухне.
+// Табличный формат по этажам, 2 колонки на листе, распределённые
+// сбалансированно по числу строк (не строго один этаж = одна колонка) —
+// без логотипов, для экономии бумаги при печати на кухне.
 export default function OrdersPdfDocument({
   dateLabel,
   mealLabels,
   floorLabel,
-  floorTables,
+  printColumns,
 }: Props) {
   return (
     <Document>
@@ -110,30 +113,30 @@ export default function OrdersPdfDocument({
         <Text style={styles.title}>{dateLabel}</Text>
 
         <View style={styles.grid}>
-          {floorTables.map(({ floor, rows }) => (
-            <View key={floor} style={styles.table} wrap={false}>
-              <Text style={styles.floorHeader}>
-                {floorLabel} {floor}
-              </Text>
-              <View style={styles.headerRow}>
-                <Text style={styles.headerCellRoom}>№</Text>
-                <Text style={styles.headerCell}>{mealLabels.breakfast[0]}</Text>
-                <Text style={styles.headerCell}>{mealLabels.lunch[0]}</Text>
-                <Text style={styles.headerCell}>{mealLabels.dinner[0]}</Text>
-              </View>
-              {rows.map((row) => (
-                <View key={row.roomNumber} style={styles.row}>
-                  <View style={styles.roomCell}>
-                    <Text style={styles.roomNumber}>{row.roomNumber}</Text>
-                    <Text style={styles.roomNames}>{row.namesLabel}</Text>
+          {printColumns.map((column, colIdx) => (
+            <View key={colIdx} style={styles.column}>
+              {column.map(({ floor, rows }) => (
+                <View key={floor} style={styles.table} wrap={false}>
+                  <Text style={styles.floorHeader}>
+                    {floorLabel} {floor}
+                  </Text>
+                  <View style={styles.headerRow}>
+                    <Text style={styles.headerCellRoom}>№</Text>
+                    <Text style={styles.headerCell}>{mealLabels.breakfast[0]}</Text>
+                    <Text style={styles.headerCell}>{mealLabels.lunch[0]}</Text>
+                    <Text style={styles.headerCell}>{mealLabels.dinner[0]}</Text>
                   </View>
-                  <Text style={styles.mealCell}>
-                    {row.counts.breakfast || ''}
-                  </Text>
-                  <Text style={styles.mealCell}>{row.counts.lunch || ''}</Text>
-                  <Text style={styles.mealCell}>
-                    {row.counts.dinner || ''}
-                  </Text>
+                  {rows.map((row) => (
+                    <View key={row.roomNumber} style={styles.row}>
+                      <View style={styles.roomCell}>
+                        <Text style={styles.roomNumber}>{row.roomNumber}</Text>
+                        <Text style={styles.roomNames}>{row.namesLabel}</Text>
+                      </View>
+                      <Text style={styles.mealCell}>{row.counts.breakfast}</Text>
+                      <Text style={styles.mealCell}>{row.counts.lunch}</Text>
+                      <Text style={styles.mealCell}>{row.counts.dinner}</Text>
+                    </View>
+                  ))}
                 </View>
               ))}
             </View>
